@@ -4,9 +4,9 @@ Search for images courtesy of the [NASA Images API](https://images.nasa.gov/docs
 
 ### The Variants
 There are two variants with similar functionality:
-1. `mvi` - Using `Fragment`s, Android UI Toolkit & [Data Binding](https://developer.android.com/topic/libraries/data-binding), [Navigation component](https://developer.android.com/guide/navigation/navigation-getting-started).
+1. `astro-uitoolkit` - Using `Fragment`s, Android UI Toolkit & [Data Binding](https://developer.android.com/topic/libraries/data-binding), [Navigation component](https://developer.android.com/guide/navigation/navigation-getting-started).
 
-2. `mvijetpackcompose` - Using [Jetpack Compose](https://developer.android.com/jetpack/compose/setup).
+2. `astro-compose` - Using [Jetpack Compose](https://developer.android.com/jetpack/compose/setup).
 
 
 ### References
