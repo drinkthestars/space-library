@@ -1,5 +1,5 @@
 include ':common'
-include ':mvi'
-include ':mvijetpackcompose'
+include ':astro-uitoolkit'
+include ':astro-compose'
 include ':api'
 rootProject.name = "space-library"
