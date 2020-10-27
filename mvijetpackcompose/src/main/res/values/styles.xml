@@ -1,0 +1,9 @@
+<resources>
+
+    <style name="Theme.Astro" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/blueViolet</item>
+        <item name="colorPrimaryDark">@color/darkBlueGrey</item>
+        <item name="colorAccent">@color/mediumPurple</item>
+        <item name="android:statusBarColor">@color/darkMagenta</item>
+    </style>
+</resources>
