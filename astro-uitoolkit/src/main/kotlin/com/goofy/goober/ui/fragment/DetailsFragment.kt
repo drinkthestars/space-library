@@ -7,19 +7,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.goofy.goober.databinding.DetailsFragmentBinding
-import com.goofy.goober.ui.state.bindState
-import kotlinx.coroutines.flow.StateFlow
+import com.goofy.goober.model.DetailsIntent
+import com.goofy.goober.viewmodel.DetailsViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class DetailsFragment : Fragment() {
 
-    // TODO: Eventually replace with StateFlow
-    interface FragmentState {
-        fun details(): StateFlow<State>
+    interface FragmentArgs {
+        val detailsProps: Props
     }
 
-    private val fragmentState: FragmentState by bindState()
+    private val viewModel by viewModel<DetailsViewModel>()
+    private val fragmentArgs by initArgs<FragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,12 +30,19 @@ class DetailsFragment : Fragment() {
         return DetailsFragmentBinding
             .inflate(LayoutInflater.from(context), container, false)
             .apply {
-                fragmentState.details()
-                    .onEach { state = it }
+                viewModel.state
+                    .onEach {
+                        // TODO: Handle state & set props
+                    }
                     .launchIn(viewLifecycleOwner.lifecycleScope)
+
+                viewModel.consumeIntent(fragmentArgs.detailsProps.initialIntent)
             }
             .root
     }
 
-    data class State(val description: String)
+    data class Props(
+        val onBackPressed: () -> Unit,
+        val initialIntent: DetailsIntent
+    )
 }

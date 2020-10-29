@@ -1,9 +1,11 @@
 package com.goofy.goober
 
 import android.app.Application
+import com.goofy.goober.api.ApiClient
 import com.goofy.goober.interactor.AstroInteractor
-import com.goofy.goober.model.AstroUi
-import com.goofy.goober.ui.viewmodel.AstroViewModel
+import com.goofy.goober.state.AstroUi
+import com.goofy.goober.viewmodel.AstroViewModel
+import com.goofy.goober.viewmodel.ImageSearchViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import org.koin.android.ext.koin.androidContext
@@ -16,21 +18,6 @@ class AstroApplication : Application() {
 
     private val appModule = module {
 
-        // TODO: Use qualifier
-        factory<CoroutineScope> { GlobalScope }
-
-        factory { ApplicationCoroutineScope(globalScope = get()) }
-
-        factory { AstroUi() }
-
-        factory { AstroInteractor() }
-
-        viewModel {
-            AstroViewModel(
-                astroUi = get(),
-                astroInteractor = get()
-            )
-        }
     }
 
     override fun onCreate() {
@@ -38,6 +25,7 @@ class AstroApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@AstroApplication)
+            modules(common)
             modules(appModule)
         }
     }

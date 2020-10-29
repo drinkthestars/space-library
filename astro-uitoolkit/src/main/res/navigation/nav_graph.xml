@@ -8,7 +8,7 @@
         android:name="com.goofy.goober.ui.fragment.SplashFragment"
         android:label="SplashFragment">
         <action
-            android:id="@+id/action_splashFragment_to_imageSearchFragment"
+            android:id="@+id/showImageSearchFragmentAction"
             app:destination="@id/imageSearchFragment" />
     </fragment>
     <fragment
@@ -20,7 +20,7 @@
         android:name="com.goofy.goober.ui.fragment.ImageSearchFragment"
         android:label="ImageSearchFragment">
         <action
-            android:id="@+id/action_imageSearchFragment_to_detailsFragment"
+            android:id="@+id/showDetailsFragmentAction"
             app:destination="@id/detailsFragment" />
     </fragment>
 </navigation>

@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.goofy.goober">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".AstroApplication"
@@ -13,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.activity.AstroActivity">
+        <activity android:name=".ui.uitoolkit.AstroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

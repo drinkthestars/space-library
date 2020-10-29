@@ -6,34 +6,37 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.goofy.goober.databinding.ImageResultsFragmentBinding
-import com.goofy.goober.ui.state.bindState
-import com.goofy.goober.ui.view.ImageResultsView
-import kotlinx.coroutines.flow.StateFlow
+import com.goofy.goober.databinding.ViewImageResultsBinding
+import com.goofy.goober.viewmodel.ImageSearchViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class ImageSearchFragment : Fragment() {
 
-    // TODO: Eventually replace with StateFlow
-    interface FragmentState {
-        fun imageResults(): StateFlow<ImageResultsView.State>
+    interface FragmentArgs {
+        val imageSearchProps: Props
     }
 
-    private val fragmentState: FragmentState by bindState()
+    private val viewModel by viewModel<ImageSearchViewModel>()
+    private val fragmentArgs by initArgs<FragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return ImageResultsFragmentBinding
+        return ViewImageResultsBinding
             .inflate(LayoutInflater.from(context), container, false)
             .apply {
-                fragmentState.imageResults()
-                    .onEach { imageResultsState = it }
+                viewModel.state
+                    .onEach {
+                        // TODO: Handle state set props
+                    }
                     .launchIn(viewLifecycleOwner.lifecycleScope)
             }
             .root
     }
+
+    data class Props(val onImageClick: (String) -> Unit)
 }

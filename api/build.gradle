@@ -1,7 +1,10 @@
 plugins {
     id 'java-library'
     id 'kotlin'
+    id 'kotlin-kapt'
 }
+
+def fuel_version = "2.3.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -14,6 +17,12 @@ sourceSets {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+
+    implementation "com.github.kittinunf.fuel:fuel:$fuel_version"
+    implementation "com.github.kittinunf.fuel:fuel-coroutines:$fuel_version"
+    implementation "com.github.kittinunf.fuel:fuel-moshi:$fuel_version"
+
+    implementation 'com.squareup.moshi:moshi:1.10.0'
+    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.10.0'
 }
