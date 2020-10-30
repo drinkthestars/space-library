@@ -1,4 +1,4 @@
-## 🪐Space Library
+## :milky_way: Space Library
 POC of an MVI + VIPER based arch.
 Search for images courtesy of the [NASA Images API](https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf).
 
