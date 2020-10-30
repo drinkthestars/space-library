@@ -14,7 +14,7 @@
         android:theme="@style/Theme.Astro"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".ui.activity.AstroActivity"
+            android:name=".ui.activity.AstroComposeActivity"
             android:theme="@style/Theme.Astro">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -14,7 +14,7 @@ class ImageSearchViewModel(
     private val astroInteractor: AstroInteractor
 ) : ViewModel() {
 
-    val state = MutableStateFlow(ImageResultsState(isLoading = true))
+    val state = MutableStateFlow(ImageResultsState())
 
     fun consumeIntent(intent: ImageResultsIntent) {
         reduce(intent)

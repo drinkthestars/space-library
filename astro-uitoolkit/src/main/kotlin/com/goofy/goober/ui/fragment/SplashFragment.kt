@@ -10,6 +10,7 @@ import android.view.ViewPropertyAnimator
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.fragment.app.Fragment
 import com.goofy.goober.databinding.SplashFragmentBinding
+import com.goofy.goober.ui.util.activityArgs
 
 class SplashFragment : Fragment() {
 
@@ -17,8 +18,7 @@ class SplashFragment : Fragment() {
         val prop: Prop
     }
 
-    private val fragmentArgs by initArgs<FragmentArgs>()
-
+    private val fragmentArgs by activityArgs<FragmentArgs>()
     private var animation: ViewPropertyAnimator? = null
 
     override fun onCreateView(
@@ -55,7 +55,6 @@ class SplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         animation?.start()
     }
 

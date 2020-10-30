@@ -1,37 +1,31 @@
-package com.goofy.goober.ui.uitoolkit
+package com.goofy.goober.ui.activity
 
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.goofy.goober.R
+import com.goofy.goober.ui.navigation.AstroNavArgsViewModel
 import com.goofy.goober.ui.navigation.AstroAppRouter
-import com.goofy.goober.ui.fragment.AstroFragmentArgs
-import com.goofy.goober.ui.fragment.FragmentArgsProvider
-import com.goofy.goober.ui.fragment.NavArgsViewModel
 import com.goofy.goober.viewmodel.AstroViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class AstroActivity : AppCompatActivity(), FragmentArgsProvider<AstroFragmentArgs> {
+class AstroActivity : AppCompatActivity() {
 
     private val viewModel: AstroViewModel by viewModel()
-    private val navArgsViewModel: NavArgsViewModel by viewModel()
+    private val navArgsViewModel: AstroNavArgsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        fullscreen()
         setContentView(R.layout.main_activity)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.navHostFragment) as NavHostFragment
         val navController = navHostFragment.navController
 
         val router = AstroAppRouter(
@@ -45,5 +39,11 @@ class AstroActivity : AppCompatActivity(), FragmentArgsProvider<AstroFragmentArg
             }.launchIn(lifecycleScope)
     }
 
-    override fun provideFragmentArgs(): AstroFragmentArgs = navArgsViewModel
+    private fun fullscreen() {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+    }
 }

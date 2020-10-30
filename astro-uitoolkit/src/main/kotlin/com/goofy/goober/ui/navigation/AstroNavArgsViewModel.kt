@@ -1,9 +1,12 @@
-package com.goofy.goober.ui.fragment
+package com.goofy.goober.ui.navigation
 
-import androidx.lifecycle.ViewModel
+import com.goofy.goober.ui.fragment.DetailsFragment
+import com.goofy.goober.ui.fragment.ImageSearchFragment
+import com.goofy.goober.ui.fragment.SplashFragment
+import com.goofy.goober.ui.util.NavArgsViewModel
 import kotlin.properties.Delegates
 
-class NavArgsViewModel : ViewModel(), AstroFragmentArgs {
+class AstroNavArgsViewModel : NavArgsViewModel(), AstroFragmentArgs {
     var splashArgs by Delegates.notNull<SplashFragment.Prop>()
     var imageSearchArgs by Delegates.notNull<ImageSearchFragment.Props>()
     var detailsArgs by Delegates.notNull<DetailsFragment.Props>()
@@ -13,6 +16,7 @@ class NavArgsViewModel : ViewModel(), AstroFragmentArgs {
     override val detailsProps: DetailsFragment.Props get() = detailsArgs
 }
 
-interface AstroFragmentArgs : SplashFragment.FragmentArgs,
+interface AstroFragmentArgs :
+    SplashFragment.FragmentArgs,
     ImageSearchFragment.FragmentArgs,
     DetailsFragment.FragmentArgs

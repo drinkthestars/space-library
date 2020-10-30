@@ -10,12 +10,11 @@ import com.goofy.goober.state.ImageSearch
 import com.goofy.goober.state.Splash
 import com.goofy.goober.ui.fragment.DetailsFragment
 import com.goofy.goober.ui.fragment.ImageSearchFragment
-import com.goofy.goober.ui.fragment.NavArgsViewModel
 import com.goofy.goober.ui.fragment.SplashFragment
 
 internal class AstroAppRouter(
     private val navController: NavController,
-    private val navArgsViewModel: NavArgsViewModel
+    private val navArgsViewModel: AstroNavArgsViewModel
 ) {
 
     fun route(

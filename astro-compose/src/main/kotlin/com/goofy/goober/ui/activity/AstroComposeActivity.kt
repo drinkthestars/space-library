@@ -11,7 +11,7 @@ import com.goofy.goober.viewmodel.AstroViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class AstroActivity : AppCompatActivity() {
+class AstroComposeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
