@@ -5,6 +5,7 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.goofy.goober.R
 import com.goofy.goober.ui.navigation.AstroNavArgsViewModel
@@ -24,12 +25,8 @@ class AstroActivity : AppCompatActivity() {
         fullscreen()
         setContentView(R.layout.main_activity)
 
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.navHostFragment) as NavHostFragment
-        val navController = navHostFragment.navController
-
         val router = AstroAppRouter(
-            navController = navController,
+            navController = navController(),
             navArgsViewModel = navArgsViewModel
         )
 
@@ -39,11 +36,13 @@ class AstroActivity : AppCompatActivity() {
             }.launchIn(lifecycleScope)
     }
 
+    private fun navController(): NavController {
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.navHostFragment) as NavHostFragment
+        return navHostFragment.navController
+    }
+
     private fun fullscreen() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
     }
 }

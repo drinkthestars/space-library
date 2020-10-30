@@ -29,17 +29,12 @@ class SplashFragment : Fragment() {
         return SplashFragmentBinding
             .inflate(LayoutInflater.from(context), container, false)
             .apply {
-                nasalogo.apply {
-                    alpha = 0f
-                    z = 0f
-                }
-
+                nasalogo.apply { alpha = 0f }
                 animation = nasalogo.animate().apply {
                     duration = 800
                     startDelay = 1000
                     interpolator = AccelerateDecelerateInterpolator()
                     alpha(1f)
-                    z(1f)
                     setListener(
                         object : AnimatorListenerAdapter() {
                             override fun onAnimationEnd(animation: Animator?) {

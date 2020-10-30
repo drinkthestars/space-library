@@ -1,38 +1,29 @@
 package com.goofy.goober.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val LightThemeColors = lightColors(
-    primary = Indigo,
-    primaryVariant = MediumPurple,
-    onPrimary = Color.White,
-    secondary = Indigo,
-    secondaryVariant = Color.White,
-    onSecondary = BlueViolet,
-    background = Color.White
-)
+private val BlueViolet = Color(0x000024)
+private val DarkBlueGrey = Color(0xff1e1e2f)
+private val Indigo = Color(0x1c2a4c)
 
-private val DarkThemeColors = darkColors(
+private val ThemeColors = darkColors(
     primary = Indigo,
     primaryVariant = BlueViolet,
-    onPrimary = Color.White,
-    secondary = DarkMagenta,
-    onSecondary = Color.White,
+    onPrimary = SplashBg,
+    secondary = DarkBlueGrey,
+    onSecondary = SplashBg,
     background = DarkBlueGrey
 )
 
 @Composable
 fun AstroAppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colors = if (darkTheme) DarkThemeColors else LightThemeColors,
+        colors = ThemeColors,
         content = content
     )
 }
