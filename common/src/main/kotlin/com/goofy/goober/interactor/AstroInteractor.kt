@@ -1,25 +1,36 @@
 package com.goofy.goober.interactor
 
+import com.goofy.goober.api.model.Image
+import com.goofy.goober.api.usecase.GetImageDetails
 import com.goofy.goober.api.usecase.SearchImages
+import com.goofy.goober.api.util.Result
 import com.goofy.goober.model.Details
 import com.goofy.goober.model.DetailsIntent
 import com.goofy.goober.model.ImageResultsIntent
-import com.goofy.goober.state.AstroIntent
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
 
-class AstroInteractor (
-    private val searchImages: SearchImages
-){
+class AstroInteractor(
+    private val searchImages: SearchImages,
+    private val getImageDetails: GetImageDetails
+) {
 
-    suspend fun produceDisplayDetailsIntent(): DetailsIntent {
-        delay(1_000)
-        return DetailsIntent.DisplayContent(Details(url = "test", description = "", title = ""))
+    suspend fun produceDisplayDetailsIntent(image: Image): DetailsIntent {
+        return when (val result = getImageDetails(image.detailUrl)) {
+            is Result.Success -> DetailsIntent.DisplayContent(
+                Details(
+                    imageDetail = result.data,
+                    description = image.description,
+                    title = image.title
+                )
+            )
+
+            is Result.Fail -> DetailsIntent.ShowError
+        }
     }
 
     suspend fun produceImageResultsIntent(query: String): ImageResultsIntent {
-        delay(1_000)
-        return ImageResultsIntent.ShowImages(searchImages(query))
+        return when (val result = searchImages(query)) {
+            is Result.Success -> ImageResultsIntent.ShowImages(result.data)
+            is Result.Fail -> ImageResultsIntent.ShowError
+        }
     }
 }

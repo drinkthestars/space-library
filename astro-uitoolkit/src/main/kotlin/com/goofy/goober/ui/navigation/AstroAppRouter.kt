@@ -5,7 +5,7 @@ import com.goofy.goober.R
 import com.goofy.goober.model.DetailsIntent
 import com.goofy.goober.state.AstroIntent
 import com.goofy.goober.state.AstroState
-import com.goofy.goober.state.DisplayingDetails
+import com.goofy.goober.state.ImageDetails
 import com.goofy.goober.state.ImageSearch
 import com.goofy.goober.state.Splash
 import com.goofy.goober.ui.fragment.DetailsFragment
@@ -33,7 +33,7 @@ internal class AstroAppRouter(
             }
             ImageSearch -> {
                 navArgsViewModel.imageSearchArgs = ImageSearchFragment.Props(
-                    onImageClick = { onIntent(AstroIntent.OpenDetails) }
+                    onImageClick = { onIntent(AstroIntent.OpenDetails(it)) }
                 )
                 with(navController) {
                     if (currentDestination?.id == R.id.splashFragment) {
@@ -41,7 +41,7 @@ internal class AstroAppRouter(
                     }
                 }
             }
-            is DisplayingDetails -> {
+            is ImageDetails -> {
                 navArgsViewModel.detailsArgs = DetailsFragment.Props(
                     onBackPressed = { },
                     initialIntent = DetailsIntent.DisplayContent(null)

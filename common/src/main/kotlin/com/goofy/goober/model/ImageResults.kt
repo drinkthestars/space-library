@@ -14,7 +14,11 @@ data class ImageResultsState(
         return when (intent) {
             is ShowImages -> if (this.isLoading) imageResultsState(intent) else this
             is ShowError -> this.copy(isLoading = false, hasError = true, noResults = false)
-            is Search -> this.copy(isLoading = true, hasError = false, noResults = false)
+            is Search -> if (intent.query.isNotBlank()) {
+                this.copy(isLoading = true, hasError = false, noResults = false)
+            } else {
+                this
+            }
         }
     }
 

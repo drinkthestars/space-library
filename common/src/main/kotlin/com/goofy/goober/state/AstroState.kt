@@ -1,5 +1,7 @@
 package com.goofy.goober.state
 
+import com.goofy.goober.api.model.Image
+
 sealed class AstroState {
     abstract fun reduce(intent: AstroIntent): AstroState
 }
@@ -8,7 +10,7 @@ object Splash: AstroState() {
     override fun reduce(intent: AstroIntent): AstroState {
         return when(intent) {
             AstroIntent.ImageSearchResults -> ImageSearch
-            AstroIntent.OpenDetails -> this
+            is AstroIntent.OpenDetails -> this
         }
     }
 }
@@ -17,16 +19,16 @@ object ImageSearch: AstroState() {
     override fun reduce(intent: AstroIntent): AstroState {
         return when(intent) {
             AstroIntent.ImageSearchResults -> this
-            AstroIntent.OpenDetails -> DisplayingDetails("")
+            is  AstroIntent.OpenDetails -> ImageDetails(intent.image)
         }
     }
 }
 
-data class DisplayingDetails(val url: String): AstroState() {
+data class ImageDetails(val image: Image): AstroState() {
     override fun reduce(intent: AstroIntent): AstroState {
         return when(intent) {
             AstroIntent.ImageSearchResults -> ImageSearch
-            AstroIntent.OpenDetails -> this
+            is AstroIntent.OpenDetails -> this
         }
     }
 }

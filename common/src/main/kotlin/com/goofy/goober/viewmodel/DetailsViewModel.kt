@@ -14,13 +14,14 @@ class DetailsViewModel(
     private val astroInteractor: AstroInteractor
 ) : ViewModel() {
 
-    val state = MutableStateFlow(DetailsState(isLoading = true))
+    val state = MutableStateFlow(DetailsState())
 
     fun consumeIntent(intent: DetailsIntent) {
+        reduce(intent)
         when (intent) {
-            is DetailsIntent.DisplayContent -> {
+            is DetailsIntent.LoadContent -> {
                 viewModelScope.launch {
-                    reduce(astroInteractor.produceDisplayDetailsIntent())
+                    reduce(astroInteractor.produceDisplayDetailsIntent(intent.image))
                 }
             }
         }
