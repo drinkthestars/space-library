@@ -11,6 +11,7 @@ object Splash: AstroState() {
         return when(intent) {
             AstroIntent.ImageSearchResults -> ImageSearch
             is AstroIntent.OpenDetails -> this
+            AstroIntent.BackPress -> this
         }
     }
 }
@@ -20,6 +21,7 @@ object ImageSearch: AstroState() {
         return when(intent) {
             AstroIntent.ImageSearchResults -> this
             is  AstroIntent.OpenDetails -> ImageDetails(intent.image)
+            AstroIntent.BackPress -> this
         }
     }
 }
@@ -29,6 +31,7 @@ data class ImageDetails(val image: Image): AstroState() {
         return when(intent) {
             AstroIntent.ImageSearchResults -> ImageSearch
             is AstroIntent.OpenDetails -> this
+            AstroIntent.BackPress -> this
         }
     }
 }

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
@@ -27,6 +26,7 @@ import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.goofy.goober.api.model.Image
 import com.goofy.goober.ui.theme.ImageTitleBg
@@ -35,7 +35,7 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 @OptIn(ExperimentalFocus::class)
 @Composable
 internal fun SearchInput(onTextChange: (String) -> Unit) {
-    var textState by remember { mutableStateOf(TextFieldValue()) }
+    var textState by remember { mutableStateOf(TextFieldValue("galaxy")) }
     TextField(
         shape = RoundedCornerShape(size = 3.dp),
         modifier = Modifier.padding(start = 12.dp, end = 12.dp).fillMaxWidth()
@@ -51,25 +51,31 @@ internal fun SearchInput(onTextChange: (String) -> Unit) {
 @Composable
 internal fun ImageResultItem(image: Image, onClick: () -> Unit) {
     Column(
-        modifier = Modifier.fillMaxSize().clickable(onClick = onClick),
+        modifier = Modifier.preferredHeight(275.dp).fillMaxWidth().clickable(onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Box(modifier = Modifier.fillMaxWidth().preferredHeight(275.dp)) {
-            Card(
-                shape = RoundedCornerShape(size = 5.dp)
-            ) {
-                CoilImage(
-                    contentScale = ContentScale.Crop,
-                    data = image.thumbUrl,
-                    fadeIn = true
-                )
-            }
+        Card(
+            modifier = Modifier.fillMaxWidth().preferredHeight(217.dp),
+            shape = RoundedCornerShape(size = 5.dp)
+        ) {
+            CoilImage(
+                contentScale = ContentScale.Crop,
+                data = image.thumbUrl,
+                fadeIn = true
+            )
+
+        }
+        Box(
+            modifier = Modifier.fillMaxWidth().preferredHeight(50.dp)
+                .background(color = ImageTitleBg),
+            alignment = Alignment.CenterStart
+        ) {
             Text(
                 text = image.title,
                 color = Color.White,
-                modifier = Modifier.fillMaxWidth().preferredHeight(50.dp)
-                    .background(color = ImageTitleBg).align(Alignment.BottomCenter)
+                textAlign = TextAlign.Start,
+                modifier = Modifier.padding(start = 16.dp)
             )
         }
         Spacer(modifier = Modifier.fillMaxWidth().preferredHeight(8.dp))

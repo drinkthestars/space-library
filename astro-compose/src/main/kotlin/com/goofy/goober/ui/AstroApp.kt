@@ -7,7 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,11 +17,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.onCommit
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -108,28 +111,37 @@ internal fun ImageSearch(onIntent: (AstroIntent) -> Unit) {
 internal fun DisplayingDetails(onIntent: (AstroIntent) -> Unit, image: Image) {
     val viewModel = viewModel<DetailsViewModel>(factory = ViewModelFactoryAmbient.current)
     val state by viewModel.state.collectAsState()
-    viewModel.consumeIntent(DetailsIntent.LoadContent(image))
-    Box(
-        alignment = Alignment.Center,
-        modifier = Modifier.fillMaxWidth().fillMaxHeight(0.8f).background(MaterialTheme.colors.background),
+    val load = remember {
+        println("LOADNG DETAILS WARP")
+        viewModel.consumeIntent(DetailsIntent.LoadContent(image))
+        1
+    }
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-       val details = state.details
+        val details = state.details
         when {
             details != null -> {
-                CoilImage(
-                    contentScale = ContentScale.Crop,
-                    data = details.imageDetail.largeSizeUrl,
-                    fadeIn = true,
-                    loading = {
-                        Text(text = "Loading...", fontSize = TextUnit.Companion.Sp(20))
-                    }
-                )
+                Box(
+                    modifier = Modifier.fillMaxWidth().fillMaxHeight()
+                ) {
+                    CoilImage(
+                        contentScale = ContentScale.Crop,
+                        data = image.thumbUrl,
+                        fadeIn = true,
+                        loading = {
+                            Text(text = "Loading...")
+                        },
+                    )
+                }
             }
             state.isLoading -> {
-                Text(text = "Loading...", fontSize = TextUnit.Companion.Sp(20))
+                Text(text = "Loading...")
             }
             state.hasError -> {
-                Text(text = ":( Couldn't load", fontSize = TextUnit.Companion.Sp(20))
+                Text(text = ":( Couldn't load")
             }
         }
     }

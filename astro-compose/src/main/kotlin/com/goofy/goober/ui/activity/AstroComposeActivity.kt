@@ -38,6 +38,12 @@ class AstroComposeActivity : AppCompatActivity() {
         }
     }
 
+//    override fun onBackPressed() {
+//        if (!navigationViewModel.onBack()) {
+//            super.onBackPressed()
+//        }
+//    }
+
     private fun fullscreen() {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
     }
