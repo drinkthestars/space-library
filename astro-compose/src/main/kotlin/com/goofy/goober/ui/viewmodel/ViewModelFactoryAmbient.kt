@@ -1,20 +1,21 @@
 package com.goofy.goober.ui.viewmodel
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
-import androidx.compose.runtime.staticAmbientOf
-import com.goofy.goober.viewmodel.ViewModelFactory
+/**
+ * Can't use until Kotlin 1.4.20 + Compose support
+ * because of https://youtrack.jetbrains.com/issue/KT-41006
+ */
 
-val ViewModelFactoryAmbient = staticAmbientOf<ViewModelFactory> {
-    error("No ViewModelProvider.Factory provided!")
-}
 
-@Composable
-fun ProvideViewModelFactory(
-    viewModelFactory: ViewModelFactory,
-    content: @Composable () -> Unit
-) {
-    Providers(ViewModelFactoryAmbient provides viewModelFactory) {
-        content()
-    }
-}
+//val ViewModelFactoryAmbient = staticAmbientOf<ViewModelFactory> {
+//    error("No ViewModelProvider.Factory provided!")
+//}
+//
+//@Composable
+//fun ProvideViewModelFactory(
+//    viewModelFactory: ViewModelFactory,
+//    content: @Composable () -> Unit
+//) {
+//    Providers(ViewModelFactoryAmbient provides viewModelFactory) {
+//        content()
+//    }
+//}

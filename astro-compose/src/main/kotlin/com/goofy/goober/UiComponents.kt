@@ -5,14 +5,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,11 +39,17 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 @OptIn(ExperimentalFocus::class)
 @Composable
 internal fun SearchInput(onTextChange: (String) -> Unit) {
-    var textState by remember { mutableStateOf(TextFieldValue("galaxy")) }
-    TextField(
-        shape = RoundedCornerShape(size = 3.dp),
-        modifier = Modifier.padding(start = 12.dp, end = 12.dp).fillMaxWidth()
-            .wrapContentHeight().focus(),
+    var textState by remember {
+        onTextChange("galaxy")
+        mutableStateOf(TextFieldValue("galaxy"))
+    }
+    OutlinedTextField(
+        activeColor = Color.White,
+        modifier = Modifier
+            .padding(start = 12.dp, end = 12.dp)
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .focus(),
         value = textState,
         onValueChange = {
             textState = it
@@ -51,33 +61,62 @@ internal fun SearchInput(onTextChange: (String) -> Unit) {
 @Composable
 internal fun ImageResultItem(image: Image, onClick: () -> Unit) {
     Column(
-        modifier = Modifier.preferredHeight(275.dp).fillMaxWidth().clickable(onClick = onClick),
+        modifier = Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .background(MaterialTheme.colors.background),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Card(
-            modifier = Modifier.fillMaxWidth().preferredHeight(217.dp),
+            modifier = Modifier.fillMaxSize(),
             shape = RoundedCornerShape(size = 5.dp)
         ) {
-            CoilImage(
-                contentScale = ContentScale.Crop,
-                data = image.thumbUrl,
-                fadeIn = true
-            )
+            Box {
+                ImageContent(image)
+                ImageTitleContent(image)
+            }
+        }
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .preferredHeight(18.dp)
+                .background(MaterialTheme.colors.background)
+        )
+    }
+}
 
-        }
-        Box(
-            modifier = Modifier.fillMaxWidth().preferredHeight(50.dp)
-                .background(color = ImageTitleBg),
-            alignment = Alignment.CenterStart
-        ) {
-            Text(
-                text = image.title,
-                color = Color.White,
-                textAlign = TextAlign.Start,
-                modifier = Modifier.padding(start = 16.dp)
-            )
-        }
-        Spacer(modifier = Modifier.fillMaxWidth().preferredHeight(8.dp))
+@Composable
+private fun BoxScope.ImageTitleContent(image: Image) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .preferredHeight(50.dp)
+            .background(ImageTitleBg)
+            .align(Alignment.BottomStart),
+        alignment = Alignment.CenterStart
+    ) {
+        Text(
+            text = image.title,
+            color = Color.White,
+            textAlign = TextAlign.Start,
+            modifier = Modifier.padding(start = 16.dp)
+        )
+    }
+}
+
+@Composable
+private fun ImageContent(image: Image) {
+    Box(
+        modifier = Modifier.fillMaxWidth().preferredHeight(275.dp),
+        alignment = Alignment.Center
+    ) {
+        CoilImage(
+            modifier = Modifier.fillMaxWidth().preferredHeight(275.dp),
+            contentScale = ContentScale.Crop,
+            data = image.thumbUrl,
+            fadeIn = true
+        )
     }
 }

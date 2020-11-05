@@ -7,7 +7,6 @@ import com.goofy.goober.interactor.AstroInteractor
 import com.goofy.goober.viewmodel.AstroViewModel
 import com.goofy.goober.viewmodel.DetailsViewModel
 import com.goofy.goober.viewmodel.ImageSearchViewModel
-import com.goofy.goober.viewmodel.ViewModelFactory
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -27,5 +26,9 @@ val common = module {
 
     viewModel { ImageSearchViewModel(astroInteractor = get()) }
 
-    factory { ViewModelFactory(astroInteractor = get()) }
+    /**
+     * Can't use until Kotlin 1.4.20 + Compose support
+     * because of https://youtrack.jetbrains.com/issue/KT-41006
+     */
+//    factory { ViewModelFactory(astroInteractor = get()) }
 }

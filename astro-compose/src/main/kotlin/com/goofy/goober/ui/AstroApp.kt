@@ -17,22 +17,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.onCommit
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.viewModel
 import com.goofy.goober.ImageResultItem
 import com.goofy.goober.SearchInput
 import com.goofy.goober.api.model.Image
@@ -45,19 +40,28 @@ import com.goofy.goober.state.ImageDetails
 import com.goofy.goober.state.ImageSearch
 import com.goofy.goober.state.Splash
 import com.goofy.goober.ui.theme.SplashBg
-import com.goofy.goober.ui.viewmodel.ViewModelFactoryAmbient
 import com.goofy.goober.viewmodel.DetailsViewModel
 import com.goofy.goober.viewmodel.ImageSearchViewModel
 import dev.chrisbanes.accompanist.coil.CoilImage
 
+/**
+ * Accepts ViewModels as args instead of using
+ * [com.goofy.goober.ui.viewmodel.ViewModelFactoryAmbientKt] in Composable
+ * because of https://youtrack.jetbrains.com/issue/KT-41006
+ */
 @Composable
-internal fun AstroApp(state: AstroState, onIntent: (AstroIntent) -> Unit) {
+internal fun AstroApp(
+    imageSearchViewModel: ImageSearchViewModel,
+    detailsViewModel: DetailsViewModel,
+    state: AstroState,
+    onIntent: (AstroIntent) -> Unit
+) {
     Surface(color = MaterialTheme.colors.background) {
         when (state) {
             Splash -> Splash(onIntent)
-            ImageSearch -> ImageSearch(onIntent)
+            ImageSearch -> ImageSearch(imageSearchViewModel, onIntent)
             is ImageDetails -> {
-                DisplayingDetails(onIntent, state.image)
+                DisplayingDetails(detailsViewModel, onIntent, state.image)
             }
         }
     }
@@ -90,8 +94,10 @@ internal fun Splash(onIntent: (AstroIntent) -> Unit) {
 }
 
 @Composable
-internal fun ImageSearch(onIntent: (AstroIntent) -> Unit) {
-    val viewModel = viewModel<ImageSearchViewModel>(factory = ViewModelFactoryAmbient.current)
+internal fun ImageSearch(
+    viewModel: ImageSearchViewModel,
+    onIntent: (AstroIntent) -> Unit
+) {
     val state by viewModel.state.collectAsState()
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -108,14 +114,12 @@ internal fun ImageSearch(onIntent: (AstroIntent) -> Unit) {
 }
 
 @Composable
-internal fun DisplayingDetails(onIntent: (AstroIntent) -> Unit, image: Image) {
-    val viewModel = viewModel<DetailsViewModel>(factory = ViewModelFactoryAmbient.current)
+internal fun DisplayingDetails(
+    viewModel: DetailsViewModel,
+    onIntent: (AstroIntent) -> Unit, image: Image
+) {
     val state by viewModel.state.collectAsState()
-    val load = remember {
-        println("LOADNG DETAILS WARP")
-        viewModel.consumeIntent(DetailsIntent.LoadContent(image))
-        1
-    }
+    remember { viewModel.consumeIntent(DetailsIntent.LoadContent(image)) }
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,

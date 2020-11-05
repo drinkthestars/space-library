@@ -35,7 +35,7 @@ class ApiClient {
 
         if (error != null) {
             println("Error loading images! ${error.message}")
-            return Result.Fail()
+            return Result.Fail
         }
 
         return Result.Success(results.toImageResults())
@@ -47,7 +47,7 @@ class ApiClient {
 
         if (error != null || results == null || results.size < 4) {
             println("Error loading image detail! ${error?.message}")
-            return Result.Fail()
+            return Result.Fail
         }
 
         val imageDetail = ImageDetail(

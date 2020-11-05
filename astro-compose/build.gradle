@@ -5,7 +5,7 @@ android {
     compileSdkVersion 30
     defaultConfig {
         applicationId "com.goofy.goober"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -30,6 +30,7 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
+//        useIR = true
     }
 
     buildFeatures {
@@ -67,11 +68,12 @@ dependencies {
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.foundation:foundation:$compose_version"
     implementation "androidx.compose.animation:animation:$compose_version"
+    implementation "androidx.navigation:navigation-compose:$compose_nav_version"
 
     implementation "androidx.ui:ui-tooling:$compose_uicore_version"
     implementation "androidx.ui:ui-test:$compose_uicore_version"
 
-    implementation "dev.chrisbanes.accompanist:accompanist-coil:0.3.1"
+    implementation "dev.chrisbanes.accompanist:accompanist-coil:0.3.2"
 
     testImplementation "junit:junit:4.13.1"
 }
