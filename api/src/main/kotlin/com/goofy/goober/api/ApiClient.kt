@@ -7,7 +7,7 @@ import com.github.kittinunf.fuel.moshi.defaultMoshi
 import com.github.kittinunf.fuel.moshi.moshiDeserializerOf
 import com.goofy.goober.api.model.ApiImageResults
 import com.goofy.goober.api.model.Image
-import com.goofy.goober.api.model.ImageDetail
+import com.goofy.goober.api.model.ImageSizes
 import com.goofy.goober.api.util.Result
 import com.squareup.moshi.Types
 
@@ -41,7 +41,7 @@ class ApiClient {
         return Result.Success(results.toImageResults())
     }
 
-    suspend fun getDetail(url: String): Result<ImageDetail> {
+    suspend fun getDetail(url: String): Result<ImageSizes> {
         val (results, error) = Fuel.get(url)
             .awaitObjectResult(moshiDeserializerOf(detailUrlsAdapter))
 
@@ -50,7 +50,7 @@ class ApiClient {
             return Result.Fail
         }
 
-        val imageDetail = ImageDetail(
+        val imageDetail = ImageSizes(
             originalSizeUrl = results[0],
             largeSizeUrl = results[1],
             mediumSizeUrl = results[2],

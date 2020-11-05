@@ -2,14 +2,12 @@ package com.goofy.goober.ui.activity
 
 import android.os.Bundle
 import android.view.Window
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.goofy.goober.R
 import com.goofy.goober.ui.navigation.AstroNavArgsViewModel
-import com.goofy.goober.ui.navigation.AstroAppRouter
 import com.goofy.goober.viewmodel.AstroViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

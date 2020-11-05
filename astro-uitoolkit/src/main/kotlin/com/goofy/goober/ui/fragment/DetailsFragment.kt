@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.goofy.goober.databinding.DetailsFragmentBinding
+import com.goofy.goober.api.model.Image
+import com.goofy.goober.databinding.ImageDetailsFragmentBinding
 import com.goofy.goober.model.DetailsIntent
-import com.goofy.goober.ui.navigation.AstroNavArgsViewModel
 import com.goofy.goober.ui.util.activityArgs
 import com.goofy.goober.viewmodel.DetailsViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -29,22 +29,22 @@ class DetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return DetailsFragmentBinding
+        return ImageDetailsFragmentBinding
             .inflate(LayoutInflater.from(context), container, false)
             .apply {
                 viewModel.state
-                    .onEach {
-                        // TODO: Handle state & set props
-                    }
+                    .onEach { viewState = it }
                     .launchIn(viewLifecycleOwner.lifecycleScope)
 
-                viewModel.consumeIntent(fragmentArgs.detailsProps.initialIntent)
+                viewModel.consumeIntent(
+                    DetailsIntent.LoadContent(fragmentArgs.detailsProps.image)
+                )
             }
             .root
     }
 
     data class Props(
         val onBackPressed: () -> Unit,
-        val initialIntent: DetailsIntent
+        val image: Image
     )
 }

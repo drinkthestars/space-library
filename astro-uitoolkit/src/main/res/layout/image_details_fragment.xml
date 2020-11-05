@@ -4,20 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="com.goofy.goober.ui.view.ImageResultsView.Props"/>
-        <import type="com.goofy.goober.model.ImageResultsState"/>
-        <variable
-            name="viewProps"
-            type="Props" />
         <variable
             name="viewState"
-            type="ImageResultsState" />
-
+            type="com.goofy.goober.model.DetailsState" />
     </data>
-    <com.goofy.goober.ui.view.ImageResultsView
+    <com.goofy.goober.ui.view.ImageDetailsView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:props="@{viewProps}"
         app:state="@{viewState}"
         />
 </layout>

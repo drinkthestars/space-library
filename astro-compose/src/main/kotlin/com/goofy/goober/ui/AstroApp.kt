@@ -125,7 +125,7 @@ internal fun DisplayingDetails(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        val details = state.details
+        val details = state.imageDetails
         when {
             details != null -> {
                 Box(
@@ -133,7 +133,7 @@ internal fun DisplayingDetails(
                 ) {
                     CoilImage(
                         contentScale = ContentScale.Crop,
-                        data = image.thumbUrl,
+                        data = details.imageSizes.mediumSizeUrl,
                         fadeIn = true,
                         loading = {
                             Text(text = "Loading...")

@@ -38,7 +38,7 @@ class ImageSearchFragment : Fragment() {
                     onImageClick = args.imageSearchProps.onImageClick
                 )
                 viewModel.state
-                    .onEach { imageResultsState = it }
+                    .onEach { viewState = it }
                     .launchIn(viewLifecycleOwner.lifecycleScope)
             }
             .root

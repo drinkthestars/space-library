@@ -4,19 +4,16 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.TextView
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalCoroutinesApi::class)
-internal fun TextView.textChanges(debounceMillis: Long): Flow<String> {
+internal fun TextView.textChanges(): Flow<String> {
     return callbackFlow<CharSequence?> {
         val textWatcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -43,6 +40,4 @@ internal fun TextView.textChanges(debounceMillis: Long): Flow<String> {
         .filterNotNull()
         .map { it.toString() }
         .filter { it.isNotBlank() }
-        .buffer(Channel.CONFLATED)
-        .debounce(debounceMillis)
 }

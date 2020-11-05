@@ -70,6 +70,7 @@ internal fun ImageResultItem(image: Image, onClick: () -> Unit) {
         verticalArrangement = Arrangement.Center
     ) {
         Card(
+            elevation = 5.dp,
             modifier = Modifier.fillMaxSize(),
             shape = RoundedCornerShape(size = 5.dp)
         ) {

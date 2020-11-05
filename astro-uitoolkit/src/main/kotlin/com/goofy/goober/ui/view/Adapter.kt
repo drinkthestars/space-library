@@ -10,9 +10,9 @@ import com.goofy.goober.api.model.Image
 import com.goofy.goober.databinding.ImageListItemBinding
 import com.goofy.goober.ui.view.ImageListAdapter.*
 
-class ImageListAdapter(
-    private val onImageClick: (Image) -> Unit
-) : ListAdapter<Image, ImageViewHolder>(UserItemDiffCallback()) {
+class ImageListAdapter() : ListAdapter<Image, ImageViewHolder>(UserItemDiffCallback()) {
+
+    var onImageClick: (Image) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ImageViewHolder {
         return ImageViewHolder(
@@ -29,9 +29,7 @@ class ImageListAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(image: Image, onImageClick: (Image) -> Unit) {
-            binding.image.load(image.thumbUrl) {
-                crossfade(true)
-            }
+            binding.image.load(image.thumbUrl) { crossfade(enable = true) }
             binding.title.text = image.title
             binding.root.setOnClickListener { onImageClick(image) }
         }

@@ -22,26 +22,28 @@ class ImageResultsView(
 
     private val binding = ImageResultsViewBinding.inflate(LayoutInflater.from(context), this, true)
     private val mainScope = MainScope()
-    private lateinit var adapter: ImageListAdapter
+    private val adapter = ImageListAdapter()
 
-    fun setProps(props: Props) {
-        mainScope.coroutineContext.cancelChildren()
-        binding.searchInput
-            .textChanges(debounceMillis = 300L)
-            .onEach { props.onSearch(it) }
-            .launchIn(mainScope)
-
-        adapter = ImageListAdapter(props.onImageClick)
+    init {
         binding.imageResults.adapter = adapter
         binding.imageResults.layoutManager = LinearLayoutManager(context)
     }
 
-    fun setImageResultsState(imageResultsState: ImageResultsState) {
-        binding.loading.isVisible = imageResultsState.isLoading
-        binding.error.isVisible = imageResultsState.hasError
-        binding.emptyState.isVisible = imageResultsState.noResults
-        binding.imageResults.isVisible = !imageResultsState.noResults
-        adapter.submitList(imageResultsState.images)
+    fun setProps(props: Props) {
+        mainScope.coroutineContext.cancelChildren()
+        adapter.onImageClick = props.onImageClick
+        binding.searchInput
+            .textChanges()
+            .onEach { props.onSearch(it) }
+            .launchIn(mainScope)
+    }
+
+    fun setState(state: ImageResultsState) {
+        binding.loading.isVisible = state.isLoading
+        binding.error.isVisible = state.hasError
+        binding.emptyState.isVisible = state.noResults
+        binding.imageResults.isVisible = !state.noResults
+        adapter.submitList(state.images)
     }
 
     override fun onDetachedFromWindow() {

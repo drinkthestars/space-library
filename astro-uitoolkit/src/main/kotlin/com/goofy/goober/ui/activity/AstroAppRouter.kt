@@ -1,4 +1,4 @@
-package com.goofy.goober.ui.navigation
+package com.goofy.goober.ui.activity
 
 import androidx.navigation.NavController
 import com.goofy.goober.R
@@ -11,6 +11,7 @@ import com.goofy.goober.state.Splash
 import com.goofy.goober.ui.fragment.DetailsFragment
 import com.goofy.goober.ui.fragment.ImageSearchFragment
 import com.goofy.goober.ui.fragment.SplashFragment
+import com.goofy.goober.ui.navigation.AstroNavArgsViewModel
 
 internal class AstroAppRouter(
     private val navController: NavController,
@@ -27,26 +28,34 @@ internal class AstroAppRouter(
     private fun AstroState.routeInternal(onIntent: (AstroIntent) -> Unit) {
         when (this) {
             Splash -> {
-                navArgsViewModel.splashArgs = SplashFragment.Prop {
-                    onIntent(AstroIntent.ImageSearchResults)
+                with(navController) {
+                    if (currentDestination?.id == R.id.splashFragment) {
+                        navArgsViewModel.splashArgs = SplashFragment.Prop {
+                            onIntent(AstroIntent.ImageSearchResults)
+                        }
+                    }
                 }
             }
             ImageSearch -> {
-                navArgsViewModel.imageSearchArgs = ImageSearchFragment.Props(
-                    onImageClick = { onIntent(AstroIntent.OpenDetails(it)) }
-                )
                 with(navController) {
-                    if (currentDestination?.id == R.id.splashFragment) {
+                    if (currentDestination?.id != R.id.imageSearchFragment) {
+                        navArgsViewModel.imageSearchArgs = ImageSearchFragment.Props(
+                            onImageClick = { onIntent(AstroIntent.OpenDetails(it)) }
+                        )
                         navigate(R.id.showImageSearchFragmentAction)
                     }
                 }
             }
             is ImageDetails -> {
-                navArgsViewModel.detailsArgs = DetailsFragment.Props(
-                    onBackPressed = { },
-                    initialIntent = DetailsIntent.DisplayContent(null)
-                )
-                navController.navigate(R.id.showDetailsFragmentAction)
+                with(navController) {
+                    if (currentDestination?.id != R.id.detailsFragment) {
+                        navArgsViewModel.detailsArgs = DetailsFragment.Props(
+                            onBackPressed = { },
+                            image = image
+                        )
+                        navigate(R.id.showDetailsFragmentAction)
+                    }
+                }
             }
         }.let {}
     }

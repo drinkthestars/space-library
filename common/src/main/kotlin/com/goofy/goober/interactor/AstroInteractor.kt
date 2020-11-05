@@ -4,7 +4,7 @@ import com.goofy.goober.api.model.Image
 import com.goofy.goober.api.usecase.GetImageDetails
 import com.goofy.goober.api.usecase.SearchImages
 import com.goofy.goober.api.util.Result
-import com.goofy.goober.model.Details
+import com.goofy.goober.model.ImageDetails
 import com.goofy.goober.model.DetailsIntent
 import com.goofy.goober.model.ImageResultsIntent
 
@@ -16,8 +16,8 @@ class AstroInteractor(
     suspend fun produceDisplayDetailsIntent(image: Image): DetailsIntent {
         return when (val result = getImageDetails(image.detailUrl)) {
             is Result.Success -> DetailsIntent.DisplayContent(
-                Details(
-                    imageDetail = result.data,
+                ImageDetails(
+                    imageSizes = result.data,
                     description = image.description,
                     title = image.title
                 )
