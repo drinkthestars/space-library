@@ -10,7 +10,7 @@ There are two variants with similar functionality:
 
 
 ### References
-- Another [similar project](https://github.com/drinkthestars/pizza-flow)
+- Another [similar project](https://github.com/drinkthestars/virtual-date-planner)
 
 ### License
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
