@@ -1,19 +1,18 @@
 package com.goofy.goober.ui.navigation
 
+import androidx.lifecycle.ViewModel
 import com.goofy.goober.ui.fragment.DetailsFragment
 import com.goofy.goober.ui.fragment.ImageSearchFragment
 import com.goofy.goober.ui.fragment.SplashFragment
-import com.goofy.goober.ui.util.NavArgsViewModel
-import kotlin.properties.Delegates
 
-class AstroNavArgsViewModel : NavArgsViewModel(), AstroFragmentArgs {
-    var splashArgs by Delegates.notNull<SplashFragment.Prop>()
-    var imageSearchArgs by Delegates.notNull<ImageSearchFragment.Props>()
-    var detailsArgs by Delegates.notNull<DetailsFragment.Props>()
+class AstroNavArgsViewModel : ViewModel(), AstroFragmentArgs {
+    var splashArgs: SplashFragment.Props? = null
+    var imageSearchArgs: ImageSearchFragment.Props? = null
+    var detailsArgs: DetailsFragment.Props? = null
 
-    override val prop: SplashFragment.Prop get() = splashArgs
-    override val imageSearchProps: ImageSearchFragment.Props get() = imageSearchArgs
-    override val detailsProps: DetailsFragment.Props get() = detailsArgs
+    override val splashProps: SplashFragment.Props get() = checkNotNull(splashArgs)
+    override val imageSearchProps: ImageSearchFragment.Props get() = checkNotNull(imageSearchArgs)
+    override val detailsProps: DetailsFragment.Props get() = checkNotNull(detailsArgs)
 }
 
 interface AstroFragmentArgs :

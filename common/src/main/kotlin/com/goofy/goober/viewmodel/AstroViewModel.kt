@@ -1,21 +1,23 @@
 package com.goofy.goober.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.goofy.goober.interactor.AstroInteractor
 import com.goofy.goober.state.AstroIntent
 import com.goofy.goober.state.AstroState
-import com.goofy.goober.state.AstroUi
 import com.goofy.goober.state.Splash
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class AstroViewModel : ViewModel() {
+class AstroViewModel(
+    initState: AstroState = Splash(initialQuery = "galaxy")
+) : ViewModel() {
 
-    private val astroUi = AstroUi(initialState = Splash)
-    val state: StateFlow<AstroState> get() = astroUi.state
+    val state: StateFlow<AstroState> get() = _state
 
-    fun consumeIntent(intent: AstroIntent) = astroUi.reduce(intent)
+    private val _state: MutableStateFlow<AstroState> = MutableStateFlow(initState)
+
+    fun consumeIntent(intent: AstroIntent) {
+        _state.value = _state.value.reduce(intent)
+    }
 }

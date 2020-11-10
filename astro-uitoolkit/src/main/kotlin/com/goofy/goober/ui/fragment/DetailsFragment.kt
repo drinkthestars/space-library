@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.goofy.goober.api.model.Image
@@ -11,8 +12,7 @@ import com.goofy.goober.databinding.ImageDetailsFragmentBinding
 import com.goofy.goober.model.DetailsIntent
 import com.goofy.goober.ui.util.activityArgs
 import com.goofy.goober.viewmodel.DetailsViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collect
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class DetailsFragment : Fragment() {
@@ -22,7 +22,15 @@ class DetailsFragment : Fragment() {
     }
 
     private val viewModel by viewModel<DetailsViewModel>()
-    private val fragmentArgs by activityArgs<FragmentArgs>()
+    private val args by activityArgs<FragmentArgs>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() { args.detailsProps.onBack() }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,19 +40,18 @@ class DetailsFragment : Fragment() {
         return ImageDetailsFragmentBinding
             .inflate(LayoutInflater.from(context), container, false)
             .apply {
-                viewModel.state
-                    .onEach { viewState = it }
-                    .launchIn(viewLifecycleOwner.lifecycleScope)
-
+                viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                    viewModel.state.collect { viewState = it }
+                }
                 viewModel.consumeIntent(
-                    DetailsIntent.LoadContent(fragmentArgs.detailsProps.image)
+                    DetailsIntent.LoadContent(args.detailsProps.image)
                 )
             }
             .root
     }
 
     data class Props(
-        val onBackPressed: () -> Unit,
+        val onBack: () -> Unit,
         val image: Image
     )
 }

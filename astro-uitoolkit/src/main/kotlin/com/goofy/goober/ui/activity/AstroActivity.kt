@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.goofy.goober.R
 import com.goofy.goober.ui.navigation.AstroNavArgsViewModel
+import com.goofy.goober.ui.navigation.AstroNavController
 import com.goofy.goober.viewmodel.AstroViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collect
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class AstroActivity : AppCompatActivity() {
@@ -24,20 +23,22 @@ class AstroActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
 
         val router = AstroAppRouter(
-            navController = navController(),
+            astroNavController = navController(),
             navArgsViewModel = navArgsViewModel
         )
 
-        viewModel.state
-            .onEach { state ->
-                router.route(state) { intent -> viewModel.consumeIntent(intent) }
-            }.launchIn(lifecycleScope)
+        lifecycleScope.launchWhenStarted {
+            viewModel.state
+                .collect { state ->
+                    router.route(state) { viewModel.consumeIntent(it) }
+                }
+        }
     }
 
-    private fun navController(): NavController {
+    private fun navController(): AstroNavController {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.navHostFragment) as NavHostFragment
-        return navHostFragment.navController
+        return AstroNavController(navHostFragment.navController, onExit = { finish() })
     }
 
     private fun fullscreen() {

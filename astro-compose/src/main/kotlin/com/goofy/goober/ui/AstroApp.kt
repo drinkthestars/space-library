@@ -7,7 +7,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,13 +21,17 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.goofy.goober.ImageResultItem
+import com.goofy.goober.ImageSearchResultsOverlay
 import com.goofy.goober.SearchInput
 import com.goofy.goober.api.model.Image
 import com.goofy.goober.common.R
@@ -58,10 +61,10 @@ internal fun AstroApp(
 ) {
     Surface(color = MaterialTheme.colors.background) {
         when (state) {
-            Splash -> Splash(onIntent)
-            ImageSearch -> ImageSearch(imageSearchViewModel, onIntent)
+            is Splash -> Splash(state.initialQuery, onIntent)
+            is ImageSearch -> ImageSearch(imageSearchViewModel, onIntent)
             is ImageDetails -> {
-                DisplayingDetails(detailsViewModel, onIntent, state.image)
+                ImageDetails(detailsViewModel, onIntent, state.image)
             }
         }
     }
@@ -69,7 +72,7 @@ internal fun AstroApp(
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-internal fun Splash(onIntent: (AstroIntent) -> Unit) {
+internal fun Splash(initialQuery: String, onIntent: (AstroIntent) -> Unit) {
     Surface(color = SplashBg, modifier = Modifier.fillMaxSize()) {
         val durationMillis = 800
         val animSpec = remember {
@@ -82,7 +85,7 @@ internal fun Splash(onIntent: (AstroIntent) -> Unit) {
         val logoAlpha = animate(
             target = 1f,
             animSpec = animSpec,
-            endListener = { onIntent(AstroIntent.ImageSearchResults) }
+            endListener = { onIntent(AstroIntent.ImageSearchResults(initialQuery)) }
         )
         Image(
             asset = vectorResource(R.drawable.ic_nasa_vector_logo),
@@ -99,54 +102,78 @@ internal fun ImageSearch(
     onIntent: (AstroIntent) -> Unit
 ) {
     val state by viewModel.state.collectAsState()
+    var queryState by remember { mutableStateOf(TextFieldValue("galaxy")) }
+
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            Spacer(modifier = Modifier.fillMaxWidth().preferredHeight(12.dp))
-            SearchInput { viewModel.consumeIntent(ImageResultsIntent.Search(it)) }
-            Spacer(modifier = Modifier.fillMaxWidth().preferredHeight(12.dp))
-            ScrollableColumn(modifier = Modifier.padding(8.dp)) {
-                state.images.forEach { image ->
-                    ImageResultItem(image) { onIntent(AstroIntent.OpenDetails(image)) }
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                Spacer(modifier = Modifier.fillMaxWidth().preferredHeight(12.dp))
+                SearchInput(queryState) {
+                    queryState = it
+                    viewModel.consumeIntent(ImageResultsIntent.Search(it.text))
+                }
+                Spacer(modifier = Modifier.fillMaxWidth().preferredHeight(12.dp))
+                ScrollableColumn(modifier = Modifier.padding(8.dp)) {
+                    state.images.forEach { image ->
+                        ImageResultItem(image) { onIntent(AstroIntent.OpenDetails(image)) }
+                    }
                 }
             }
+            ImageSearchResultsOverlay(state)
         }
     }
 }
 
 @Composable
-internal fun DisplayingDetails(
+internal fun ImageDetails(
     viewModel: DetailsViewModel,
     onIntent: (AstroIntent) -> Unit, image: Image
 ) {
     val state by viewModel.state.collectAsState()
     remember { viewModel.consumeIntent(DetailsIntent.LoadContent(image)) }
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+
+    val details = state.imageDetails
+    Surface(
+        modifier = Modifier.fillMaxWidth().fillMaxHeight()
     ) {
-        val details = state.imageDetails
         when {
             details != null -> {
-                Box(
-                    modifier = Modifier.fillMaxWidth().fillMaxHeight()
-                ) {
+                Box {
                     CoilImage(
                         contentScale = ContentScale.Crop,
                         data = details.imageSizes.mediumSizeUrl,
                         fadeIn = true,
-                        loading = {
-                            Text(text = "Loading...")
-                        },
+                        loading = { ImageLoadInProgress() },
+                        error = { ImageLoadError() }
                     )
                 }
             }
-            state.isLoading -> {
-                Text(text = "Loading...")
-            }
-            state.hasError -> {
-                Text(text = ":( Couldn't load")
-            }
+            state.isLoading -> ImageLoadInProgress()
+            state.hasError -> ImageLoadError()
         }
+    }
+}
+
+@Composable
+private fun ImageLoadInProgress() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .preferredHeight(50.dp),
+        alignment = Alignment.Center
+    ) {
+        Text(text = "Loading...")
+    }
+}
+
+@Composable
+private fun ImageLoadError() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .preferredHeight(50.dp),
+        alignment = Alignment.Center
+    ) {
+        Text(text = ":( Couldn't load")
     }
 }

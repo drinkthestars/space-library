@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.goofy.goober.api.model.Image
@@ -12,8 +13,7 @@ import com.goofy.goober.model.ImageResultsIntent
 import com.goofy.goober.ui.util.activityArgs
 import com.goofy.goober.ui.view.ImageResultsView
 import com.goofy.goober.viewmodel.ImageSearchViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collect
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ImageSearchFragment : Fragment() {
@@ -25,6 +25,14 @@ class ImageSearchFragment : Fragment() {
     private val viewModel by viewModel<ImageSearchViewModel>()
     private val args by activityArgs<FragmentArgs>()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() { args.imageSearchProps.onBack() }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,15 +42,20 @@ class ImageSearchFragment : Fragment() {
             .inflate(LayoutInflater.from(context), container, false)
             .apply {
                 viewProps = ImageResultsView.Props(
-                    onSearch = { viewModel.consumeIntent(ImageResultsIntent.Search(it))},
+                    query = args.imageSearchProps.query,
+                    onSearch = { viewModel.consumeIntent(ImageResultsIntent.Search(it)) },
                     onImageClick = args.imageSearchProps.onImageClick
                 )
-                viewModel.state
-                    .onEach { viewState = it }
-                    .launchIn(viewLifecycleOwner.lifecycleScope)
+                viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                    viewModel.state.collect { viewState = it }
+                }
             }
             .root
     }
 
-    data class Props(val onImageClick: (Image) -> Unit)
+    data class Props(
+        val query: String,
+        val onImageClick: (Image) -> Unit,
+        val onBack: () -> Unit
+    )
 }

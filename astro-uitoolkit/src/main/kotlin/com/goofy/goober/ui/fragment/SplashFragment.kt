@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewPropertyAnimator
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.goofy.goober.databinding.SplashFragmentBinding
 import com.goofy.goober.ui.util.activityArgs
@@ -15,11 +16,19 @@ import com.goofy.goober.ui.util.activityArgs
 class SplashFragment : Fragment() {
 
     interface FragmentArgs {
-        val prop: Prop
+        val splashProps: Props
     }
 
-    private val fragmentArgs by activityArgs<FragmentArgs>()
+    private val args by activityArgs<FragmentArgs>()
     private var animation: ViewPropertyAnimator? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() { args.splashProps.onBack() }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,8 +47,7 @@ class SplashFragment : Fragment() {
                     setListener(
                         object : AnimatorListenerAdapter() {
                             override fun onAnimationEnd(animation: Animator?) {
-                                super.onAnimationEnd(animation)
-                                fragmentArgs.prop.onSplashDone()
+                                args.splashProps.onSplashDone()
                             }
                         }
                     )
@@ -53,7 +61,8 @@ class SplashFragment : Fragment() {
         animation?.start()
     }
 
-    data class Prop(
-        val onSplashDone: () -> Unit
+    data class Props(
+        val onSplashDone: () -> Unit,
+        val onBack: () -> Unit
     )
 }

@@ -30,12 +30,16 @@ class ImageResultsView(
     }
 
     fun setProps(props: Props) {
-        mainScope.coroutineContext.cancelChildren()
         adapter.onImageClick = props.onImageClick
-        binding.searchInput
-            .textChanges()
-            .onEach { props.onSearch(it) }
-            .launchIn(mainScope)
+        with(mainScope) {
+            coroutineContext.cancelChildren()
+            binding.searchInput
+                .textChanges()
+                .onEach { props.onSearch(it) }
+                .launchIn(scope = this)
+            binding.searchInput.setText(props.query)
+            props.onSearch(props.query)
+        }
     }
 
     fun setState(state: ImageResultsState) {
@@ -52,6 +56,7 @@ class ImageResultsView(
     }
 
     data class Props(
+        val query: String,
         val onSearch: (String) -> Unit,
         val onImageClick: (Image) -> Unit
     )

@@ -1,8 +1,6 @@
 package com.goofy.goober.ui.activity
 
-import androidx.navigation.NavController
 import com.goofy.goober.R
-import com.goofy.goober.model.DetailsIntent
 import com.goofy.goober.state.AstroIntent
 import com.goofy.goober.state.AstroState
 import com.goofy.goober.state.ImageDetails
@@ -12,9 +10,10 @@ import com.goofy.goober.ui.fragment.DetailsFragment
 import com.goofy.goober.ui.fragment.ImageSearchFragment
 import com.goofy.goober.ui.fragment.SplashFragment
 import com.goofy.goober.ui.navigation.AstroNavArgsViewModel
+import com.goofy.goober.ui.navigation.AstroNavController
 
 internal class AstroAppRouter(
-    private val navController: NavController,
+    private val astroNavController: AstroNavController,
     private val navArgsViewModel: AstroNavArgsViewModel
 ) {
 
@@ -27,36 +26,37 @@ internal class AstroAppRouter(
 
     private fun AstroState.routeInternal(onIntent: (AstroIntent) -> Unit) {
         when (this) {
-            Splash -> {
-                with(navController) {
-                    if (currentDestination?.id == R.id.splashFragment) {
-                        navArgsViewModel.splashArgs = SplashFragment.Prop {
-                            onIntent(AstroIntent.ImageSearchResults)
-                        }
-                    }
+            is Splash -> {
+                astroNavController {
+                    navArgsViewModel.splashArgs = SplashFragment.Props(
+                        onSplashDone = { onIntent(AstroIntent.ImageSearchResults(initialQuery)) },
+                        onBack = { astroNavController.exit() },
+                    )
                 }
             }
-            ImageSearch -> {
-                with(navController) {
+            is ImageSearch -> {
+                astroNavController {
                     if (currentDestination?.id != R.id.imageSearchFragment) {
                         navArgsViewModel.imageSearchArgs = ImageSearchFragment.Props(
-                            onImageClick = { onIntent(AstroIntent.OpenDetails(it)) }
+                            onImageClick = { onIntent(AstroIntent.OpenDetails(it)) },
+                            onBack = { astroNavController.exit() },
+                            query = query
                         )
-                        navigate(R.id.showImageSearchFragmentAction)
+                        navigate(R.id.imageSearchFragment)
                     }
                 }
             }
             is ImageDetails -> {
-                with(navController) {
+                astroNavController {
                     if (currentDestination?.id != R.id.detailsFragment) {
                         navArgsViewModel.detailsArgs = DetailsFragment.Props(
-                            onBackPressed = { },
+                            onBack = { onIntent(AstroIntent.Back) },
                             image = image
                         )
-                        navigate(R.id.showDetailsFragmentAction)
+                        navigate(R.id.detailsFragment)
                     }
                 }
             }
-        }.let {}
+        }
     }
 }

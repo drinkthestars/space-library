@@ -11,6 +11,6 @@ class AstroUi(initialState: AstroState) {
     private val _state: MutableStateFlow<AstroState> = MutableStateFlow(initialState)
 
     fun reduce(intent: AstroIntent) {
-         _state.value = _state.value.reduce(intent)
+        _state.value = _state.value.reduce(intent)
     }
 }

@@ -25,9 +25,9 @@ data class ImageResultsState(
     private fun imageResultsState(intent: ShowImages): ImageResultsState {
         val images = intent.images
         return if (images.isNotEmpty()) {
-            this.copy(isLoading = false, hasError = false, noResults = false, images = images)
+            ImageResultsState(images = images)
         } else {
-            this.copy(isLoading = false, hasError = false, noResults = true)
+            ImageResultsState(noResults = true)
         }
     }
 }

@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="Error loading images"
+                android:textSize="14sp"
                 android:textAlignment="center"
                 android:textColor="@android:color/white" />
         </FrameLayout>
