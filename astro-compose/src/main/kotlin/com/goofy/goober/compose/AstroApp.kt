@@ -24,7 +24,9 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.drawLayer
@@ -75,7 +77,7 @@ internal fun AstroApp(
 @Composable
 internal fun Splash(initialQuery: String, onNavigate: (AstroIntent) -> Unit) {
     Surface(color = SplashBg, modifier = Modifier.fillMaxSize()) {
-        var visibility = remember { true }
+        var visibility by mutableStateOf(true)
         val opacity = animatedOpacity(
             animation = tween(
                 easing = LinearEasing,
@@ -84,11 +86,7 @@ internal fun Splash(initialQuery: String, onNavigate: (AstroIntent) -> Unit) {
             ),
             visible = visibility,
             onAnimationFinish = {
-                if (!visibility) {
-                    onNavigate(AstroIntent.ImageSearchResults("galaxy"))
-                } else {
-                    visibility = false
-                }
+                onNavigate(AstroIntent.ImageSearchResults(initialQuery))
             }
         )
         SplashContent(opacity)
