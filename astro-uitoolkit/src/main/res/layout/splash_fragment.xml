@@ -3,18 +3,44 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <FrameLayout
-        android:id="@+id/containerLogo"
+        android:id="@+id/slpashContainer"
         android:background="#212735"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.fragment.ImageSearchFragment">
+        tools:context=".androidview.fragment.ImageSearchFragment">
 
         <ImageView
-            android:id="@+id/nasalogo"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@raw/splash"/>
+
+        <View
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_nasa_vector_logo"/>
+            android:background="#80000000"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center"
+            android:layout_marginTop="110dp"
+            android:text="Space Library"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="50dp"
+            android:text="nasa.gov/images"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textColor="#AAFFFFFF"/>
 
     </FrameLayout>
 </layout>

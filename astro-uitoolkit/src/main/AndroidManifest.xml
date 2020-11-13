@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".AstroApplication"
+        android:name=".androidview.AstroApplication"
         android:allowBackup="true"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
-        <activity android:name=".ui.activity.AstroActivity">
+        <activity android:name="com.goofy.goober.androidview.activity.AstroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

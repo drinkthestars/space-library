@@ -8,7 +8,7 @@
             name="viewState"
             type="com.goofy.goober.model.DetailsState" />
     </data>
-    <com.goofy.goober.ui.view.ImageDetailsView
+    <com.goofy.goober.androidview.view.ImageDetailsView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:state="@{viewState}"

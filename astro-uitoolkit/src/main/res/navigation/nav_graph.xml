@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.goofy.goober.ui.fragment.SplashFragment"
+        android:name="com.goofy.goober.androidview.fragment.SplashFragment"
         android:label="SplashFragment">
         <action
             android:id="@+id/showImageSearchFragmentAction"
@@ -14,7 +14,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.goofy.goober.ui.fragment.DetailsFragment"
+        android:name="com.goofy.goober.androidview.fragment.DetailsFragment"
         android:label="DetailsFragment">
         <action
             android:id="@+id/showImageResultsFragmentAction"
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/imageSearchFragment"
-        android:name="com.goofy.goober.ui.fragment.ImageSearchFragment"
+        android:name="com.goofy.goober.androidview.fragment.ImageSearchFragment"
         android:label="ImageSearchFragment">
         <action
             android:id="@+id/showDetailsFragmentAction"
