@@ -41,8 +41,8 @@ class ApiClient {
         return Result.Success(results.toImageResults())
     }
 
-    suspend fun getDetail(url: String): Result<ImageSizes> {
-        val (results, error) = Fuel.get(url)
+    suspend fun getDetail(thumbUrl: String, detailsUrl: String): Result<ImageSizes> {
+        val (results, error) = Fuel.get(detailsUrl)
             .awaitObjectResult(moshiDeserializerOf(detailUrlsAdapter))
 
         if (error != null || results == null) {
@@ -53,7 +53,7 @@ class ApiClient {
         // TODO: Parse the various sizes better to choose the best size
         val imageDetail = ImageSizes(
             originalSizeUrl = results[0],
-            mediumSizeUrl = url,
+            mediumSizeUrl = thumbUrl,
         )
 
         return Result.Success(imageDetail)

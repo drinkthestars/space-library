@@ -14,7 +14,7 @@ class AstroInteractor(
 ) {
 
     suspend fun produceDisplayDetailsIntent(image: Image): DetailsIntent {
-        return when (val result = getImageDetails(image.detailUrl)) {
+        return when (val result = getImageDetails(thumbUrl = image.thumbUrl, detailsUrl = image.detailUrl)) {
             is Result.Success -> DetailsIntent.DisplayContent(
                 ImageDetails(
                     imageSizes = result.data,

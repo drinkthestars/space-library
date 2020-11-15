@@ -8,8 +8,8 @@ class GetImageDetails(
     private val apiClient: ApiClient
 ) {
 
-    suspend operator fun invoke(url: String):Result<ImageSizes> {
-        return apiClient.getDetail(url)
+    suspend operator fun invoke(thumbUrl: String, detailsUrl: String):Result<ImageSizes> {
+        return apiClient.getDetail(thumbUrl = thumbUrl, detailsUrl = detailsUrl)
     }
 
 }
