@@ -26,7 +26,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.onCommit
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus
@@ -34,9 +33,11 @@ import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.goofy.goober.api.model.Image
 import com.goofy.goober.common.R
 import com.goofy.goober.compose.theme.ErrorBg
@@ -66,7 +67,7 @@ internal fun animatedOpacity(
 @Composable
 internal fun SearchInputBar(
     queryState: TextFieldValue,
-    onTextFieldChange: (TextFieldValue) -> Unit,
+    onSearch: (TextFieldValue) -> Unit,
     onQueryClear: () -> Unit
 ) {
     Box(
@@ -76,7 +77,7 @@ internal fun SearchInputBar(
             .wrapContentHeight()
     ) {
         SearchInput(queryState) {
-            onTextFieldChange(it)
+            onSearch(it)
         }
         Image(
             modifier = Modifier.preferredSize(30.dp)
@@ -94,8 +95,8 @@ internal fun SearchInput(
     textState: TextFieldValue,
     onTextFieldChange: (TextFieldValue) -> Unit
 ) {
-    remember { onTextFieldChange(textState) }
     OutlinedTextField(
+        textStyle = TextStyle(color = Color.White, fontSize = 16.sp),
         activeColor = Color.White,
         modifier = Modifier
             .fillMaxWidth()
@@ -151,12 +152,12 @@ internal fun BoxScope.ImageSearchResultsOverlay(
 }
 
 @Composable
-internal fun ImageResultItem(image: Image, onClick: () -> Unit) {
+internal fun ImageResultItem(image: Image, onImageClick: (Image) -> Unit) {
     Column(
         modifier = Modifier
             .wrapContentHeight()
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .clickable(onClick = { onImageClick(image) })
             .background(MaterialTheme.colors.background),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center

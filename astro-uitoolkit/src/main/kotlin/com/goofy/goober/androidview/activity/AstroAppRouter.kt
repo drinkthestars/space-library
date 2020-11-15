@@ -29,20 +29,21 @@ internal class AstroAppRouter(
             is Splash -> {
                 astroNavController {
                     navArgsViewModel.splashArgs = SplashFragment.Props(
-                        onSplashDone = { onIntent(AstroIntent.ImageSearchResults(initialQuery)) },
+                        onSplashDone = { onIntent(AstroIntent.ImageSearchResults) },
                         onBack = { astroNavController.exit() },
                     )
                 }
             }
             is ImageSearch -> {
                 astroNavController {
-                    if (currentDestination?.id != R.id.imageSearchFragment) {
+                    if (currentDestination?.id == R.id.splashFragment) {
                         navArgsViewModel.imageSearchArgs = ImageSearchFragment.Props(
                             onImageClick = { onIntent(AstroIntent.OpenDetails(it)) },
-                            onBack = { astroNavController.exit() },
-                            query = query
+                            onBack = { astroNavController.exit() }
                         )
                         navigate(R.id.imageSearchFragment)
+                    } else if (currentDestination?.id == R.id.detailsFragment) {
+                        popBackStack()
                     }
                 }
             }

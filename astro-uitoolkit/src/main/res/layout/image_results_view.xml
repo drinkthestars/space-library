@@ -5,12 +5,19 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="androidx.lifecycle.LiveData"/>
+
+        <import type="androidx.lifecycle.LiveData" />
+        <import type="com.goofy.goober.androidview.view.SearchInputView.Props" />
+
         <variable
-            name="searchQuery"
+            name="searchInputState"
             type="LiveData&lt;String>" />
+
+        <variable
+            name="searchInputProps"
+            type="Props" />
     </data>
-    
+
     <merge
         android:background="#212735"
         tools:layout_height="match_parent"
@@ -46,9 +53,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="Error loading images"
-                android:textSize="14sp"
                 android:textAlignment="center"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
         </FrameLayout>
 
         <LinearLayout
@@ -63,6 +70,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -86,41 +94,6 @@
                 android:textSize="18dp" />
         </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/searchInputContainer"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="#66515e7d"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            >
-            <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/searchEditText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="start|center_vertical"
-            android:paddingStart="16dp"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:text="@{searchQuery}"
-            tools:text="nebula" />
-            <Button
-                android:id="@+id/clearSearchInputButton"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/ic_clear"
-                android:layout_gravity="center|end">
-            </Button>
-        </FrameLayout>
-
         <Space
             android:id="@+id/space"
             android:layout_width="match_parent"
@@ -135,6 +108,20 @@
             app:layout_constrainedHeight="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/space" />
+
+        <com.goofy.goober.androidview.view.SearchInputView
+            android:id="@+id/searchInputContainer"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="#66515e7d"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:props="@{searchInputProps}"
+            app:setState="@{searchInputState}" />
 
     </merge>
 </layout>

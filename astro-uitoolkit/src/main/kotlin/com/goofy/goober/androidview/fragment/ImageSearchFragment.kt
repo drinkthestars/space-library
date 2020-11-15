@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.asLiveData
+import com.goofy.goober.R
 import com.goofy.goober.api.model.Image
 import com.goofy.goober.databinding.ImageResultsFragmentBinding
 import com.goofy.goober.model.ImageResultsIntent
 import com.goofy.goober.androidview.util.activityArgs
+import com.goofy.goober.androidview.util.backStackEntryViewModel
 import com.goofy.goober.androidview.view.ImageResultsView
 import com.goofy.goober.androidview.viewmodel.ImageSearchViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
 
 class ImageSearchFragment : Fragment() {
 
@@ -21,7 +22,8 @@ class ImageSearchFragment : Fragment() {
         val imageSearchProps: Props
     }
 
-    private val viewModel by viewModel<ImageSearchViewModel>()
+    private val viewModel by backStackEntryViewModel<ImageSearchViewModel>(R.id.imageSearchFragment)
+
     private val args by activityArgs<FragmentArgs>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +46,10 @@ class ImageSearchFragment : Fragment() {
                     ImageResultsView.Props(
                         searchQuery = state.query,
                         onQueryClear = { state.query.value = "" },
-                        onSearch = { consumeIntent(ImageResultsIntent.Search(it)) },
+                        onSearch = {
+                            state.query.value = it
+                            consumeIntent(ImageResultsIntent.Search(it))
+                        },
                         onImageClick = args.imageSearchProps.onImageClick,
                         lifecycleOwner = viewLifecycleOwner
                     )
@@ -56,7 +61,6 @@ class ImageSearchFragment : Fragment() {
     }
 
     data class Props(
-        val query: String,
         val onImageClick: (Image) -> Unit,
         val onBack: () -> Unit
     )

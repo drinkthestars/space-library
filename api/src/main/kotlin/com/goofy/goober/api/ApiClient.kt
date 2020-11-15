@@ -45,16 +45,15 @@ class ApiClient {
         val (results, error) = Fuel.get(url)
             .awaitObjectResult(moshiDeserializerOf(detailUrlsAdapter))
 
-        if (error != null || results == null || results.size < 4) {
-            println("Error loading image detail! ${error?.message}")
+        if (error != null || results == null) {
+            println("Error loading image detail! Error = ${error?.message} | Results = $results")
             return Result.Fail
         }
 
+        // TODO: Parse the various sizes better to choose the best size
         val imageDetail = ImageSizes(
             originalSizeUrl = results[0],
-            largeSizeUrl = results[1],
-            mediumSizeUrl = results[2],
-            smallSizeUrl = results[3]
+            mediumSizeUrl = url,
         )
 
         return Result.Success(imageDetail)
@@ -75,5 +74,3 @@ class ApiClient {
         }
     }
 }
-
-

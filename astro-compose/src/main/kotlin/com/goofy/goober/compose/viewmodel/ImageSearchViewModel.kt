@@ -14,14 +14,20 @@ import kotlinx.coroutines.launch
  * The only difference is that this [ImageResultsScreenState]
  * uses Compose's [mutableStateOf]
  */
+private const val initialQuery = "galaxy"
+
 internal class ImageSearchViewModel(
     private val astroInteractor: AstroInteractor
 ) : ViewModel() {
 
     val state = ImageResultsScreenState(
-        initialQuery = "galaxy",
+        initialQuery = initialQuery,
         initialImageResultsState = ImageResultsState()
     )
+
+    init {
+        consumeIntent(ImageResultsIntent.Search(initialQuery))
+    }
 
     fun consumeIntent(intent: ImageResultsIntent) {
         reduce(intent)

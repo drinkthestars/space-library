@@ -8,25 +8,21 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ConstraintLayout
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.drawLayer
@@ -62,31 +58,30 @@ internal fun AstroApp(
     imageSearchViewModel: ImageSearchViewModel,
     detailsViewModel: DetailsViewModel,
     state: AstroState,
-    onIntent: (AstroIntent) -> Unit
+    onNavigate: (AstroIntent) -> Unit
 ) {
     Surface(color = MaterialTheme.colors.background) {
         when (state) {
-            is Splash -> Splash(state.initialQuery, onIntent)
-            is ImageSearch -> ImageSearch(imageSearchViewModel, onIntent)
-            is ImageDetails -> ImageDetails(detailsViewModel, state.image, onIntent)
+            is Splash -> Splash(onNavigate)
+            is ImageSearch -> ImageSearch(imageSearchViewModel, onNavigate)
+            is ImageDetails -> ImageDetails(detailsViewModel, state.image, onNavigate)
         }
     }
 }
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-internal fun Splash(initialQuery: String, onNavigate: (AstroIntent) -> Unit) {
+internal fun Splash(onNavigate: (AstroIntent) -> Unit) {
     Surface(color = SplashBg, modifier = Modifier.fillMaxSize()) {
-        var visibility by mutableStateOf(true)
         val opacity = animatedOpacity(
             animation = tween(
                 easing = LinearEasing,
                 delayMillis = 100,
                 durationMillis = 1200
             ),
-            visible = visibility,
+            visible = true,
             onAnimationFinish = {
-                onNavigate(AstroIntent.ImageSearchResults(initialQuery))
+                onNavigate(AstroIntent.ImageSearchResults)
             }
         )
         SplashContent(opacity)
@@ -131,20 +126,25 @@ internal fun ImageSearch(
     viewModel: ImageSearchViewModel,
     onNavigate: (AstroIntent) -> Unit
 ) {
+    val scrollState = rememberScrollState()
+
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.fillMaxSize()) {
                 Spacer(modifier = Modifier.fillMaxWidth().preferredHeight(12.dp))
                 SearchInputBar(
                     viewModel.state.query,
-                    onTextFieldChange = {
+                    onSearch = {
                         viewModel.state.query = it
                         viewModel.consumeIntent(ImageResultsIntent.Search(it.text))
                     },
                     onQueryClear = { viewModel.state.query = TextFieldValue("") }
                 )
                 Spacer(modifier = Modifier.fillMaxWidth().preferredHeight(12.dp))
-                ScrollableColumn(modifier = Modifier.padding(8.dp)) {
+                ScrollableColumn(
+                    scrollState = scrollState,
+                    modifier = Modifier.padding(8.dp)
+                ) {
                     viewModel.state.imageResultsState.images.forEach { image ->
                         ImageResultItem(image) { onNavigate(AstroIntent.OpenDetails(image)) }
                     }
@@ -166,9 +166,7 @@ internal fun ImageDetails(
     val details = state.imageDetails
     remember { viewModel.consumeIntent(DetailsIntent.LoadContent(image)) }
 
-    Surface(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight()
-    ) {
+    Surface(modifier = Modifier.fillMaxSize()) {
         when {
             details != null -> {
                 Box(

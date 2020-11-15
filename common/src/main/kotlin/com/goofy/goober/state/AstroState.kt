@@ -6,32 +6,40 @@ sealed class AstroState {
     abstract fun reduce(intent: AstroIntent): AstroState
 }
 
-data class Splash(val initialQuery: String) : AstroState() {
+object Splash : AstroState() {
+    val route: String = "splash"
+
     override fun reduce(intent: AstroIntent): AstroState {
         return when (intent) {
-            is AstroIntent.ImageSearchResults -> ImageSearch(intent.query)
+            is AstroIntent.ImageSearchResults -> ImageSearch
             is AstroIntent.OpenDetails -> this
             is AstroIntent.Back -> this
         }
     }
 }
 
-data class ImageSearch(val query: String) : AstroState() {
+object ImageSearch : AstroState() {
+    val route: String = "imageSearch"
+
     override fun reduce(intent: AstroIntent): AstroState {
         return when (intent) {
             is AstroIntent.ImageSearchResults -> this
-            is AstroIntent.OpenDetails -> ImageDetails(query, intent.image)
+            is AstroIntent.OpenDetails -> ImageDetails(intent.image)
             is AstroIntent.Back -> this
         }
     }
 }
 
-data class ImageDetails(val query: String, val image: Image) : AstroState() {
+data class ImageDetails(val image: Image) : AstroState() {
+    companion object {
+        val route: String = "imageSearch"
+    }
+
     override fun reduce(intent: AstroIntent): AstroState {
         return when (intent) {
-            is AstroIntent.ImageSearchResults -> ImageSearch(intent.query)
+            is AstroIntent.ImageSearchResults -> ImageSearch
             is AstroIntent.OpenDetails -> this
-            is AstroIntent.Back -> ImageSearch(query)
+            is AstroIntent.Back -> ImageSearch
         }
     }
 }

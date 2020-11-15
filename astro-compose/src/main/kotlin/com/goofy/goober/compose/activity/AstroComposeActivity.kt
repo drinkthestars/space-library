@@ -39,7 +39,7 @@ class AstroComposeActivity : AppCompatActivity() {
                         imageSearchViewModel = imageSearchViewModel,
                         detailsViewModel = detailsViewModel,
                         state = state,
-                        onIntent = { viewModel.consumeIntent(it) }
+                        onNavigate = { viewModel.consumeIntent(it) }
                     )
                 }
             }

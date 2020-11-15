@@ -7,17 +7,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.goofy.goober.androidview.util.textChanges
 import com.goofy.goober.api.model.Image
 import com.goofy.goober.databinding.ImageResultsViewBinding
 import com.goofy.goober.model.ImageResultsState
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 class ImageResultsView(
     context: Context,
@@ -37,14 +33,12 @@ class ImageResultsView(
         adapter.onImageClick = props.onImageClick
         with(mainScope) {
             coroutineContext.cancelChildren()
-            binding.searchEditText
-                .textChanges()
-                .onEach { props.onSearch(it) }
-                .launchIn(props.lifecycleOwner.lifecycleScope)
-            binding.searchQuery = props.searchQuery.asLiveData()
-            binding.clearSearchInputButton.setOnClickListener { props.onQueryClear() }
+            binding.searchInputProps = SearchInputView.Props(
+                onQueryClear = { props.onQueryClear() },
+                onSearch = { props.onSearch(it) }
+            )
+            binding.searchInputState = props.searchQuery.asLiveData()
             binding.lifecycleOwner = props.lifecycleOwner
-            props.onSearch(props.searchQuery.value)
         }
     }
 

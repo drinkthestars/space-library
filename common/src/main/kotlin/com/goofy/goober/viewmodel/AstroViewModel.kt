@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AstroViewModel(
-    initState: AstroState = Splash(initialQuery = "galaxy")
+    initState: AstroState = Splash
 ) : ViewModel() {
 
     val state: StateFlow<AstroState> get() = _state

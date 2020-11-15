@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="16dp"
+    android:background="#66515e7d"
+    tools:parentTag="android.widget.FrameLayout">
+
+    <Button
+        android:id="@+id/clearSearchTextButton"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center|end"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/ic_clear" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/searchEditText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="start|center_vertical"
+        android:paddingStart="16dp"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        tools:text="nebula" />
+</merge>
