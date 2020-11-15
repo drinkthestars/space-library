@@ -72,7 +72,7 @@ internal fun SearchInputBar(
 ) {
     Box(
         alignment = Alignment.Center,
-        modifier = Modifier.padding(12.dp)
+        modifier = Modifier.padding(8.dp)
             .fillMaxWidth()
             .wrapContentHeight()
     ) {

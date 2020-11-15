@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -126,12 +127,10 @@ internal fun ImageSearch(
     viewModel: ImageSearchViewModel,
     onNavigate: (AstroIntent) -> Unit
 ) {
-    val scrollState = rememberScrollState()
-
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.fillMaxSize()) {
-                Spacer(modifier = Modifier.fillMaxWidth().preferredHeight(12.dp))
+                Spacer(modifier = Modifier.fillMaxWidth().preferredHeight(4.dp))
                 SearchInputBar(
                     viewModel.state.query,
                     onSearch = {
@@ -140,14 +139,12 @@ internal fun ImageSearch(
                     },
                     onQueryClear = { viewModel.state.query = TextFieldValue("") }
                 )
-                Spacer(modifier = Modifier.fillMaxWidth().preferredHeight(12.dp))
-                ScrollableColumn(
-                    scrollState = scrollState,
-                    modifier = Modifier.padding(8.dp)
+                Spacer(modifier = Modifier.fillMaxWidth().preferredHeight(4.dp))
+                LazyColumnFor(
+                    items = viewModel.state.imageResultsState.images,
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 8.dp)
                 ) {
-                    viewModel.state.imageResultsState.images.forEach { image ->
-                        ImageResultItem(image) { onNavigate(AstroIntent.OpenDetails(image)) }
-                    }
+                    ImageResultItem(it) { onNavigate(AstroIntent.OpenDetails(it)) }
                 }
             }
             ImageSearchResultsOverlay(viewModel.state.imageResultsState)
