@@ -4,8 +4,8 @@ import com.goofy.goober.api.model.Image
 import com.goofy.goober.api.usecase.GetImageDetails
 import com.goofy.goober.api.usecase.SearchImages
 import com.goofy.goober.api.util.Result
-import com.goofy.goober.model.ImageDetails
 import com.goofy.goober.model.DetailsIntent
+import com.goofy.goober.model.ImageDetails
 import com.goofy.goober.model.ImageResultsIntent
 
 class AstroInteractor(
