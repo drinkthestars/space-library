@@ -23,13 +23,13 @@ import androidx.compose.runtime.onCommit
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticAmbientOf
 
-val BackPressedDispatcherAmbient = staticAmbientOf<OnBackPressedDispatcherOwner> {
+val AmbientBackPressedDispatcher = staticAmbientOf<OnBackPressedDispatcherOwner> {
     error("No OnBackPressedDispatcherOwner provided!")
 }
 
 @Composable
-fun backPressHandler(onBackPressed: () -> Unit, enabled: Boolean = true) {
-    val dispatcher = BackPressedDispatcherAmbient.current.onBackPressedDispatcher
+fun BackPressHandler(onBackPressed: () -> Unit, enabled: Boolean = true) {
+    val dispatcher = AmbientBackPressedDispatcher.current.onBackPressedDispatcher
 
     val backCallback = remember(onBackPressed) {
         object : OnBackPressedCallback(enabled) {

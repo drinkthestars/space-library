@@ -5,7 +5,6 @@ import androidx.compose.animation.core.AnimatedFloat
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,17 +14,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.drawLayer
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.input.TextFieldValue
@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.goofy.goober.api.model.Image
 import com.goofy.goober.common.R
-import com.goofy.goober.compose.navigation.backPressHandler
+import com.goofy.goober.compose.navigation.BackPressHandler
 import com.goofy.goober.compose.theme.SplashBg
 import com.goofy.goober.compose.viewmodel.ImageSearchViewModel
 import com.goofy.goober.model.DetailsIntent
@@ -90,17 +90,17 @@ internal fun Splash(onNavigate: (AstroIntent) -> Unit) {
 @Composable
 internal fun SplashContent(opacity: AnimatedFloat) {
     Box(
-        alignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize().drawLayer(alpha = opacity.value)
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.fillMaxSize().graphicsLayer(alpha = opacity.value)
     ) {
         Image(
-            asset = imageResource(R.raw.splash),
+            bitmap = imageResource(R.raw.splash),
             modifier = Modifier.wrapContentSize(),
             contentScale = ContentScale.Crop,
         )
         Box(
             modifier = Modifier.fillMaxSize().background(Color(0x80000000)),
-            alignment = Alignment.Center
+            contentAlignment = Alignment.Center
         ) {
             Text(
                 "Space Library",
@@ -138,11 +138,15 @@ internal fun ImageSearch(
                     onQueryClear = { viewModel.state.query = TextFieldValue("") }
                 )
                 Spacer(modifier = Modifier.fillMaxWidth().preferredHeight(4.dp))
-                LazyColumnFor(
-                    items = viewModel.state.imageResultsState.images,
+                LazyColumn(
                     modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 8.dp)
                 ) {
-                    ImageResultItem(it) { onNavigate(AstroIntent.OpenDetails(it)) }
+                    itemsIndexed(
+                        items = viewModel.state.imageResultsState.images,
+                        itemContent = { _, item ->
+                            ImageResultItem(item) { onNavigate(AstroIntent.OpenDetails(it)) }
+                        }
+                    )
                 }
             }
             ImageSearchResultsOverlay(viewModel.state.imageResultsState)
@@ -156,16 +160,16 @@ internal fun ImageDetails(
     image: Image,
     onNavigate: (AstroIntent) -> Unit
 ) {
-    backPressHandler(onBackPressed = { onNavigate(AstroIntent.Back) })
+    BackPressHandler(onBackPressed = { onNavigate(AstroIntent.Back) })
     val state by viewModel.state.collectAsState()
     val details = state.imageDetails
-    remember { viewModel.consumeIntent(DetailsIntent.LoadContent(image)) }
+    LaunchedEffect(1) { viewModel.consumeIntent(DetailsIntent.LoadContent(image)) }
 
     Surface(modifier = Modifier.fillMaxSize()) {
         when {
             details != null -> {
                 Box(
-                    alignment = Alignment.Center
+                    contentAlignment = Alignment.Center
                 ) {
                     CoilImage(
                         contentScale = ContentScale.Crop,

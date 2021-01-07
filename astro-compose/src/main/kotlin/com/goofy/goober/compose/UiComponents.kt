@@ -5,7 +5,6 @@ import androidx.compose.animation.core.AnimatedFloat
 import androidx.compose.animation.core.AnimationEndReason
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,12 +23,12 @@ import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.onCommit
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus
-import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
@@ -71,7 +70,7 @@ internal fun SearchInputBar(
     onQueryClear: () -> Unit
 ) {
     Box(
-        alignment = Alignment.Center,
+        contentAlignment = Alignment.Center,
         modifier = Modifier.padding(8.dp)
             .fillMaxWidth()
             .wrapContentHeight()
@@ -84,12 +83,11 @@ internal fun SearchInputBar(
                 .align(Alignment.CenterEnd)
                 .padding(top = 6.dp, end = 12.dp)
                 .clickable(onClick = onQueryClear),
-            asset = vectorResource(R.drawable.ic_clear)
+            imageVector = vectorResource(R.drawable.ic_clear)
         )
     }
 }
 
-@OptIn(ExperimentalFocus::class)
 @Composable
 internal fun SearchInput(
     textState: TextFieldValue,
@@ -120,7 +118,7 @@ internal fun BoxScope.ImageSearchResultsOverlay(
         }
         state.isLoading -> {
             Box(
-                alignment = Alignment.Center,
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .preferredSize(80.dp)
                     .align(Alignment.Center)
@@ -139,7 +137,7 @@ internal fun BoxScope.ImageSearchResultsOverlay(
                     .preferredHeight(50.dp)
                     .background(ErrorBg)
                     .align(Alignment.BottomCenter),
-                alignment = Alignment.Center
+                contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = "Error loading images",
@@ -189,7 +187,7 @@ private fun BoxScope.ImageTitleContent(image: Image) {
             .preferredHeight(50.dp)
             .background(ImageTitleBg)
             .align(Alignment.BottomStart),
-        alignment = Alignment.CenterStart
+        contentAlignment = Alignment.CenterStart
     ) {
         Text(
             text = image.title,
@@ -204,7 +202,7 @@ private fun BoxScope.ImageTitleContent(image: Image) {
 private fun ImageContent(image: Image) {
     Box(
         modifier = Modifier.fillMaxWidth().preferredHeight(275.dp),
-        alignment = Alignment.Center
+        contentAlignment = Alignment.Center
     ) {
         CoilImage(
             modifier = Modifier.fillMaxWidth().preferredHeight(275.dp),
@@ -221,7 +219,7 @@ internal fun ImageLoadInProgress() {
         modifier = Modifier
             .fillMaxWidth()
             .preferredHeight(50.dp),
-        alignment = Alignment.Center
+        contentAlignment = Alignment.Center
     ) {
         Text(text = "Loading...")
     }
@@ -233,7 +231,7 @@ internal fun ImageLoadError() {
         modifier = Modifier
             .fillMaxWidth()
             .preferredHeight(50.dp),
-        alignment = Alignment.Center
+        contentAlignment = Alignment.Center
     ) {
         Text(text = ":( Couldn't load")
     }

@@ -9,7 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.viewinterop.viewModel
 import com.goofy.goober.compose.AstroApp
-import com.goofy.goober.compose.navigation.BackPressedDispatcherAmbient
+import com.goofy.goober.compose.navigation.AmbientBackPressedDispatcher
 import com.goofy.goober.compose.theme.AstroAppTheme
 import com.goofy.goober.compose.viewmodel.ImageSearchViewModel
 import com.goofy.goober.viewmodel.AstroViewModel
@@ -31,7 +31,7 @@ class AstroComposeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         fullscreen()
         setContent {
-            Providers(BackPressedDispatcherAmbient provides this) {
+            Providers(AmbientBackPressedDispatcher provides this) {
                 AstroAppTheme {
                     val viewModel = viewModel<AstroViewModel>()
                     val state by viewModel.state.collectAsState()
