@@ -10,6 +10,11 @@ import com.goofy.goober.api.model.Image
 import com.goofy.goober.api.model.ImageSizes
 import com.goofy.goober.api.util.Result
 import com.squareup.moshi.Types
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.map
 
 
 private const val BASE_URL = "https://images-api.nasa.gov"
@@ -24,9 +29,23 @@ class ApiClient {
             Types.newParameterizedType(List::class.java, String::class.java)
         )
     }
+    private val searchRequests = MutableSharedFlow<String>(
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
 
     init {
         FuelManager.instance.basePath = BASE_URL
+    }
+
+    fun enqueueSearch(query: String) {
+        searchRequests.tryEmit(query)
+    }
+
+    fun queuedSearchResults(): Flow<Result<List<Image>>> {
+        return searchRequests
+            .debounce(500)
+            .map { search(it) }
     }
 
     suspend fun search(query: String): Result<List<Image>> {
@@ -38,7 +57,7 @@ class ApiClient {
             return Result.Fail
         }
 
-        return Result.Success(results.toImageResults())
+        return Result.Success(results.asImages())
     }
 
     suspend fun getDetail(thumbUrl: String, detailsUrl: String): Result<ImageSizes> {
@@ -59,7 +78,7 @@ class ApiClient {
         return Result.Success(imageDetail)
     }
 
-    private fun ApiImageResults?.toImageResults(): List<Image> {
+    private fun ApiImageResults?.asImages(): List<Image> {
         this ?: return emptyList()
 
         return this.collection.items.map {

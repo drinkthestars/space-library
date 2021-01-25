@@ -1,8 +1,9 @@
 package com.goofy.goober
 
 import com.goofy.goober.api.ApiClient
+import com.goofy.goober.api.usecase.EnqueueImageSearch
 import com.goofy.goober.api.usecase.GetImageDetails
-import com.goofy.goober.api.usecase.SearchImages
+import com.goofy.goober.api.usecase.ImageSearchResults
 import com.goofy.goober.interactor.AstroInteractor
 import com.goofy.goober.viewmodel.AstroViewModel
 import com.goofy.goober.viewmodel.DetailsViewModel
@@ -11,13 +12,21 @@ import org.koin.dsl.module
 
 val common = module {
 
-    factory { ApiClient() }
+    single { ApiClient() }
 
-    factory { SearchImages(apiClient = get()) }
+    factory { EnqueueImageSearch(apiClient = get()) }
+
+    factory { ImageSearchResults(apiClient = get()) }
 
     factory { GetImageDetails(apiClient = get()) }
 
-    factory { AstroInteractor(searchImages = get(), getImageDetails = get()) }
+    factory {
+        AstroInteractor(
+            enqueueImageSearch = get(),
+            getImageDetails = get(),
+            imageSearchResults = get()
+        )
+    }
 
     viewModel { AstroViewModel() }
 

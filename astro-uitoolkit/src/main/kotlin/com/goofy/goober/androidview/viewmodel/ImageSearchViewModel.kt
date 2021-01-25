@@ -4,12 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.goofy.goober.androidview.state.ImageResultsScreenState
 import com.goofy.goober.interactor.AstroInteractor
-import com.goofy.goober.model.ImageResultsState
 import com.goofy.goober.model.ImageResultsIntent
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.goofy.goober.model.ImageResultsState
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 /**
  * This is logically the same as [ImageSearchViewModel] in the astro-compose package.
@@ -29,17 +28,21 @@ internal class ImageSearchViewModel(
     )
 
     init {
-        consumeIntent(ImageResultsIntent.Search(initialQuery))
+        astroInteractor
+            .produceImageSearchResultIntents()
+            .onEach { consumeIntent(it) }
+            .launchIn(viewModelScope)
+            .also { consumeIntent(ImageResultsIntent.Search(initialQuery)) }
     }
 
     fun consumeIntent(intent: ImageResultsIntent) {
         reduce(intent)
+        doTasks(intent)
+    }
+
+    private fun doTasks(intent: ImageResultsIntent) {
         when (intent) {
-            is ImageResultsIntent.Search -> {
-                viewModelScope.launch {
-                    reduce(astroInteractor.produceImageResultsIntent(intent.query))
-                }
-            }
+            is ImageResultsIntent.Search -> astroInteractor.enqueueImageSearch(intent.query)
         }
     }
 
