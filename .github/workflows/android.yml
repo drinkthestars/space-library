@@ -22,5 +22,7 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
+    - name: Build compose variant Gradle
+      run: ./gradlew :astro-compose:build
+    - name: Build ui toolkit variant Gradle
+      run: ./gradlew :astro-uitoolkit:build
