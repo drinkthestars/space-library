@@ -1,11 +1,9 @@
-package com.goofy.goober.androidview.activity
+package com.goofy.goober.androidview.navigation
 
 import com.goofy.goober.R
 import com.goofy.goober.androidview.fragment.DetailsFragment
 import com.goofy.goober.androidview.fragment.ImageSearchFragment
 import com.goofy.goober.androidview.fragment.SplashFragment
-import com.goofy.goober.androidview.util.AstroNavArgsViewModel
-import com.goofy.goober.androidview.util.AstroNavController
 import com.goofy.goober.model.AstroAction
 import com.goofy.goober.model.AstroAction.Back
 import com.goofy.goober.model.AstroAction.ImageSearchResults
@@ -22,9 +20,9 @@ internal class AstroAppRouter(
 
     fun route(
         astroState: AstroState,
-        onIntent: (AstroAction) -> Unit
+        onAction: (AstroAction) -> Unit
     ) {
-        astroState.routeInternal(onIntent)
+        astroState.routeInternal(onAction)
     }
 
     private fun AstroState.routeInternal(onAction: (AstroAction) -> Unit) {

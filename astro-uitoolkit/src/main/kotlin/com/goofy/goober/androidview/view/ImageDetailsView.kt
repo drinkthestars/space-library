@@ -9,7 +9,7 @@ import coil.load
 import com.goofy.goober.databinding.ImageDetailsViewBinding
 import com.goofy.goober.model.DetailsState
 
-class ImageDetailsView(
+internal class ImageDetailsView(
     context: Context,
     attributeSet: AttributeSet? = null
 ) : ConstraintLayout(context, attributeSet) {

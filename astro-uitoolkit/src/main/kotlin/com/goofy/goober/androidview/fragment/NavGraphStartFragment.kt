@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 
-class NavGraphStartFragment : Fragment() {
+internal class NavGraphStartFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,

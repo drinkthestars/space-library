@@ -3,16 +3,18 @@ package com.goofy.goober.androidview.activity
 import android.os.Bundle
 import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.goofy.goober.R
-import com.goofy.goober.androidview.util.AstroNavArgsViewModel
-import com.goofy.goober.androidview.util.AstroNavController
+import com.goofy.goober.androidview.navigation.AstroAppRouter
+import com.goofy.goober.androidview.navigation.AstroNavArgsViewModel
+import com.goofy.goober.androidview.navigation.AstroNavController
 import com.goofy.goober.viewmodel.AstroViewModel
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AstroActivity : AppCompatActivity() {
+internal class AstroActivity : AppCompatActivity() {
 
     private val viewModel: AstroViewModel by viewModel()
     private val navArgsViewModel: AstroNavArgsViewModel by viewModel()
@@ -28,10 +30,9 @@ class AstroActivity : AppCompatActivity() {
         )
 
         lifecycleScope.launchWhenStarted {
-            viewModel.state
-                .collect { state ->
-                    router.route(state) { viewModel.consumeIntent(it) }
-                }
+            snapshotFlow { viewModel.state }.collect { state ->
+                router.route(state) { viewModel.dispatch(it) }
+            }
         }
     }
 

@@ -9,7 +9,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
-class AstroApplication : Application() {
+internal class AstroApplication : Application() {
 
     private val appModule = module {
         viewModel { ImageSearchViewModel(astroInteractor = get()) }

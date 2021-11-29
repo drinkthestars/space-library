@@ -1,7 +1,7 @@
 package com.goofy.goober.androidview
 
 import android.app.Application
-import com.goofy.goober.androidview.util.AstroNavArgsViewModel
+import com.goofy.goober.androidview.navigation.AstroNavArgsViewModel
 import com.goofy.goober.common
 import com.goofy.goober.viewmodel.ImageSearchViewModel
 import org.koin.android.ext.koin.androidContext
@@ -10,7 +10,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
-class AstroApplication : Application() {
+internal class AstroApplication : Application() {
 
     private val appModule = module {
         viewModel { AstroNavArgsViewModel() }

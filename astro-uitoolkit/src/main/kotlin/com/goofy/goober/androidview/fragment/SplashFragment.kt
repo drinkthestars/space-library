@@ -10,10 +10,10 @@ import android.view.ViewPropertyAnimator
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import com.goofy.goober.androidview.util.activityArgs
+import com.goofy.goober.androidview.navigation.activityArgs
 import com.goofy.goober.databinding.SplashFragmentBinding
 
-class SplashFragment : Fragment() {
+internal class SplashFragment : Fragment() {
 
     interface FragmentArgs {
         val splashProps: Props

@@ -15,7 +15,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.Flow
 
-class ImageResultsView(
+internal class ImageResultsView(
     context: Context,
     attributeSet: AttributeSet? = null
 ) : ConstraintLayout(context, attributeSet) {

@@ -1,4 +1,4 @@
-package com.goofy.goober.compose
+package com.goofy.goober.compose.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.animateZoomBy
@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 @Composable
-fun TransformableCoilImage(
+internal fun TransformableCoilImage(
     data: String,
     contentDescription: String?,
     modifier: Modifier = Modifier,

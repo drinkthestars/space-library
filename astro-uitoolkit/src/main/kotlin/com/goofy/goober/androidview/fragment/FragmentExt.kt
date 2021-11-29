@@ -1,10 +1,14 @@
-package com.goofy.goober.androidview.util
+package com.goofy.goober.androidview.navigation
 
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.getKoin
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.koin.getViewModel
@@ -34,4 +38,13 @@ inline fun <reified VM : ViewModel> Fragment.backStackEntryViewModel(
         parameters = parameters,
         owner = { ViewModelOwner(findNavController().getBackStackEntry(fragmentId).viewModelStore) }
     )
+}
+
+internal inline fun <T> Fragment.collectWhenStarted(
+    flow: Flow<T>,
+    crossinline action: suspend (value: T) -> Unit
+) {
+    viewLifecycleOwner.lifecycleScope.launch {
+        flow.collect(action)
+    }
 }

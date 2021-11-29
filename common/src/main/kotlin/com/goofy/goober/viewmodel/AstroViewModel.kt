@@ -1,23 +1,24 @@
 package com.goofy.goober.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.Snapshot.Companion.withMutableSnapshot
 import androidx.lifecycle.ViewModel
 import com.goofy.goober.model.AstroAction
 import com.goofy.goober.model.AstroState
 import com.goofy.goober.model.Splash
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class AstroViewModel(
     initState: AstroState = Splash
 ) : ViewModel() {
 
-    val state: StateFlow<AstroState> get() = _state
+    var state by mutableStateOf<AstroState>(initState)
+        private set
 
-    private val _state: MutableStateFlow<AstroState> = MutableStateFlow(initState)
-
-    fun consumeIntent(intent: AstroAction) {
-        _state.value = _state.value.reduce(intent)
+    fun dispatch(action: AstroAction) {
+        withMutableSnapshot {
+            state = state.reduce(action)
+        }
     }
 }

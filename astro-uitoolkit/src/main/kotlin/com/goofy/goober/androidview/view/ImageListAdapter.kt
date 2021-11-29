@@ -10,7 +10,7 @@ import com.goofy.goober.androidview.view.ImageListAdapter.ImageViewHolder
 import com.goofy.goober.api.model.Image
 import com.goofy.goober.databinding.ImageListItemBinding
 
-class ImageListAdapter : ListAdapter<Image, ImageViewHolder>(ImageItemDiffCallback()) {
+internal class ImageListAdapter : ListAdapter<Image, ImageViewHolder>(ImageItemDiffCallback()) {
 
     var onImageClick: (Image) -> Unit = {}
 

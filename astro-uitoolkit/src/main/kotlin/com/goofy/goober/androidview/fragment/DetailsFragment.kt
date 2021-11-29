@@ -5,17 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.compose.runtime.snapshotFlow
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import com.goofy.goober.androidview.util.activityArgs
+import com.goofy.goober.androidview.navigation.activityArgs
+import com.goofy.goober.androidview.navigation.collectWhenStarted
 import com.goofy.goober.api.model.Image
 import com.goofy.goober.databinding.ImageDetailsFragmentBinding
 import com.goofy.goober.model.DetailsAction
 import com.goofy.goober.viewmodel.DetailsViewModel
-import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DetailsFragment : Fragment() {
+internal class DetailsFragment : Fragment() {
 
     interface FragmentArgs {
         val detailsProps: Props
@@ -42,12 +42,8 @@ class DetailsFragment : Fragment() {
         return ImageDetailsFragmentBinding
             .inflate(LayoutInflater.from(context), container, false)
             .apply {
-                viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                    viewModel.state.collect { viewState = it }
-                }
-                viewModel.dispatch(
-                    DetailsAction.LoadContent(args.detailsProps.image)
-                )
+                collectWhenStarted(snapshotFlow { viewModel.state }) { viewState = it }
+                viewModel.dispatch(DetailsAction.LoadContent(args.detailsProps.image))
             }
             .root
     }

@@ -40,6 +40,7 @@ captures/
 .idea/libraries
 .idea/caches
 .idea/modules.xml
+.idea/misc.xml
 .idea/navEditor.xml
 
 # Version control
