@@ -6,8 +6,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import org.koin.android.ext.android.getKoin
-import org.koin.android.viewmodel.ViewModelParameter
-import org.koin.android.viewmodel.koin.getViewModel
+import org.koin.androidx.viewmodel.ViewModelOwner
+import org.koin.androidx.viewmodel.koin.getViewModel
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
 
@@ -29,16 +29,9 @@ inline fun <reified VM : ViewModel> Fragment.backStackEntryViewModel(
     qualifier: Qualifier? = null,
     noinline parameters: ParametersDefinition? = null
 ) = lazy {
-    val store = findNavController().getBackStackEntry(fragmentId).viewModelStore
-    getKoin().getViewModel(ViewModelParameter(VM::class, qualifier, parameters, store))
-}
-
-
-inline fun <reified VM : ViewModel> Fragment.sharedNavArgsViewModel(
-    @IdRes navGraphId: Int = 0,
-    qualifier: Qualifier? = null,
-    noinline parameters: ParametersDefinition? = null
-) = lazy {
-    val store = findNavController().getViewModelStoreOwner(navGraphId).viewModelStore
-    getKoin().getViewModel(ViewModelParameter(VM::class, qualifier, parameters, store))
+    getKoin().getViewModel<VM>(
+        qualifier = qualifier,
+        parameters = parameters,
+        owner = { ViewModelOwner(findNavController().getBackStackEntry(fragmentId).viewModelStore) }
+    )
 }

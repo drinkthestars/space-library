@@ -7,6 +7,7 @@
     <data>
 
         <import type="androidx.lifecycle.LiveData" />
+
         <import type="com.goofy.goober.androidview.view.SearchInputView.Props" />
 
         <variable

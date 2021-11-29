@@ -10,6 +10,7 @@ import com.goofy.goober.api.model.Image
 import com.goofy.goober.api.model.ImageSizes
 import com.goofy.goober.api.util.Result
 import com.squareup.moshi.Types
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -35,14 +36,18 @@ class ApiClient {
     )
 
     init {
-        FuelManager.instance.basePath = BASE_URL
+        FuelManager.instance.apply {
+            basePath = BASE_URL
+            Fuel.trace = true
+        }
     }
 
     fun enqueueSearch(query: String) {
         searchRequests.tryEmit(query)
     }
 
-    fun queuedSearchResults(): Flow<Result<List<Image>>> {
+    @OptIn(FlowPreview::class)
+    fun searchResults(): Flow<Result<List<Image>>> {
         return searchRequests
             .debounce(500)
             .map { search(it) }

@@ -1,11 +1,11 @@
-package com.goofy.goober.compose.viewmodel
+package com.goofy.goober.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.goofy.goober.compose.state.ImageResultsScreenState
 import com.goofy.goober.interactor.AstroInteractor
-import com.goofy.goober.model.ImageResultsIntent
+import com.goofy.goober.model.ImageResultsAction
+import com.goofy.goober.model.ImageResultsScreenState
 import com.goofy.goober.model.ImageResultsState
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -15,35 +15,37 @@ import kotlinx.coroutines.flow.onEach
  * The only difference is that this [ImageResultsScreenState]
  * uses Compose's [mutableStateOf]
  */
-private const val initialQuery = "galaxy"
+private const val InitialQuery = "galaxy"
 
-internal class ImageSearchViewModel(
+class ImageSearchViewModel(
     private val astroInteractor: AstroInteractor
 ) : ViewModel() {
 
     val state = ImageResultsScreenState(
-        initialQuery = initialQuery,
+        initialQuery = InitialQuery,
         initialImageResultsState = ImageResultsState()
     )
 
     init {
         astroInteractor
             .produceImageSearchResultIntents()
-            .onEach { consumeIntent(it) }
+            .onEach { dispatch(it) }
             .launchIn(viewModelScope)
-            .also { consumeIntent(ImageResultsIntent.Search(initialQuery)) }
+            .also { dispatch(ImageResultsAction.Search(InitialQuery)) }
     }
 
-    fun consumeIntent(intent: ImageResultsIntent) {
-        reduce(intent)
-        doTasks(intent)
+    fun dispatch(action: ImageResultsAction) {
+        updateState(action)
+        middleware(action)
     }
 
-    private fun doTasks(intent: ImageResultsIntent) {
+    private fun middleware(intent: ImageResultsAction) {
         when (intent) {
-            is ImageResultsIntent.Search -> astroInteractor.enqueueImageSearch(intent.query)
+            is ImageResultsAction.Search -> astroInteractor.enqueueImageSearch(intent.query)
+            ImageResultsAction.ShowError,
+            is ImageResultsAction.ShowImages -> Unit
         }
     }
 
-    private fun reduce(intent: ImageResultsIntent) = state.reduce(intent)
+    private fun updateState(action: ImageResultsAction) = state.update(action)
 }

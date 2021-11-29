@@ -7,7 +7,7 @@ import com.goofy.goober.api.usecase.ImageSearchResults
 import com.goofy.goober.interactor.AstroInteractor
 import com.goofy.goober.viewmodel.AstroViewModel
 import com.goofy.goober.viewmodel.DetailsViewModel
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val common = module {

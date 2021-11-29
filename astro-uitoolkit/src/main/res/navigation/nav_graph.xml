@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/startFragment"
         android:name="com.goofy.goober.androidview.fragment.NavGraphStartFragment"
-        android:label="NavGraphStartFragment"/>
+        android:label="NavGraphStartFragment" />
 
     <fragment
         android:id="@+id/splashFragment"

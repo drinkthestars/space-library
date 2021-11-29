@@ -22,7 +22,7 @@ class ImageDetailsView(
             binding.image.load(imageDetails.imageSizes.mediumSizeUrl) {
                 listener(
                     onStart = { binding.loading.isVisible = true },
-                    onError = { _,_ -> binding.error.isVisible = true }
+                    onError = { _, _ -> binding.error.isVisible = true }
                 )
                 crossfade(enable = true)
             }

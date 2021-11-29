@@ -10,7 +10,7 @@ import com.goofy.goober.androidview.util.AstroNavArgsViewModel
 import com.goofy.goober.androidview.util.AstroNavController
 import com.goofy.goober.viewmodel.AstroViewModel
 import kotlinx.coroutines.flow.collect
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AstroActivity : AppCompatActivity() {
 

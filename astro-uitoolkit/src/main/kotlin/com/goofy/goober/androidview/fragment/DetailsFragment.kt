@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.goofy.goober.androidview.util.activityArgs
 import com.goofy.goober.api.model.Image
 import com.goofy.goober.databinding.ImageDetailsFragmentBinding
-import com.goofy.goober.model.DetailsIntent
-import com.goofy.goober.androidview.util.activityArgs
+import com.goofy.goober.model.DetailsAction
 import com.goofy.goober.viewmodel.DetailsViewModel
 import kotlinx.coroutines.flow.collect
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailsFragment : Fragment() {
 
@@ -27,7 +27,9 @@ class DetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() { args.detailsProps.onBack() }
+            override fun handleOnBackPressed() {
+                args.detailsProps.onBack()
+            }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
@@ -43,8 +45,8 @@ class DetailsFragment : Fragment() {
                 viewLifecycleOwner.lifecycleScope.launchWhenStarted {
                     viewModel.state.collect { viewState = it }
                 }
-                viewModel.consumeIntent(
-                    DetailsIntent.LoadContent(args.detailsProps.image)
+                viewModel.dispatch(
+                    DetailsAction.LoadContent(args.detailsProps.image)
                 )
             }
             .root

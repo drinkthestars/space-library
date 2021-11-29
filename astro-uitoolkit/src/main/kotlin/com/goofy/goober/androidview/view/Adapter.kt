@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.goofy.goober.androidview.view.ImageListAdapter.ImageViewHolder
 import com.goofy.goober.api.model.Image
 import com.goofy.goober.databinding.ImageListItemBinding
-import com.goofy.goober.androidview.view.ImageListAdapter.*
 
 class ImageListAdapter : ListAdapter<Image, ImageViewHolder>(ImageItemDiffCallback()) {
 
@@ -37,6 +37,7 @@ class ImageListAdapter : ListAdapter<Image, ImageViewHolder>(ImageItemDiffCallba
 
     private class ImageItemDiffCallback : DiffUtil.ItemCallback<Image>() {
         override fun areItemsTheSame(oldItem: Image, newItem: Image): Boolean = oldItem == newItem
-        override fun areContentsTheSame(oldItem: Image, newItem: Image): Boolean = oldItem == newItem
+        override fun areContentsTheSame(oldItem: Image, newItem: Image): Boolean =
+            oldItem == newItem
     }
 }

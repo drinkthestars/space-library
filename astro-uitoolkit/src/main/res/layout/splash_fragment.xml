@@ -4,43 +4,43 @@
 
     <FrameLayout
         android:id="@+id/slpashContainer"
-        android:background="#212735"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#212735"
         tools:context=".androidview.fragment.ImageSearchFragment">
 
         <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@raw/splash"/>
-
-        <View
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#80000000"/>
+            android:src="@drawable/splash" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center"
             android:layout_marginTop="110dp"
-            android:text="Space Library"
             android:gravity="center"
-            android:textSize="25sp"
-            android:textColor="@android:color/white"/>
+            android:text="Space Library"
+            android:textColor="@android:color/white"
+            android:textSize="25sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
             android:layout_marginBottom="50dp"
-            android:text="nasa.gov/images"
             android:gravity="center"
-            android:textSize="14sp"
-            android:textColor="#AAFFFFFF"/>
+            android:text="nasa.gov/images"
+            android:textColor="#AAFFFFFF"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#80000000" />
 
     </FrameLayout>
 </layout>

@@ -5,9 +5,9 @@ import com.goofy.goober.api.usecase.EnqueueImageSearch
 import com.goofy.goober.api.usecase.GetImageDetails
 import com.goofy.goober.api.usecase.ImageSearchResults
 import com.goofy.goober.api.util.Result
-import com.goofy.goober.model.DetailsIntent
+import com.goofy.goober.model.DetailsAction
 import com.goofy.goober.model.ImageDetails
-import com.goofy.goober.model.ImageResultsIntent
+import com.goofy.goober.model.ImageResultsAction
 import kotlinx.coroutines.flow.map
 
 class AstroInteractor(
@@ -20,10 +20,9 @@ class AstroInteractor(
 
     fun produceImageSearchResultIntents() = imageSearchResults().map { it.asImageResultsIntent() }
 
-    suspend fun produceDisplayDetailsIntent(image: Image): DetailsIntent {
-        val result = getImageDetails(thumbUrl = image.thumbUrl, detailsUrl = image.detailUrl)
-        return when (result) {
-            is Result.Success -> DetailsIntent.DisplayContent(
+    suspend fun produceDisplayDetailsIntent(image: Image): DetailsAction {
+        return when (val result = image.getDetails()) {
+            is Result.Success -> DetailsAction.DisplayContent(
                 ImageDetails(
                     imageSizes = result.data,
                     description = image.description,
@@ -31,14 +30,19 @@ class AstroInteractor(
                 )
             )
 
-            is Result.Fail -> DetailsIntent.ShowError
+            is Result.Fail -> DetailsAction.ShowError
         }
     }
 
-    private fun Result<List<Image>>.asImageResultsIntent(): ImageResultsIntent {
+    private suspend fun Image.getDetails() = getImageDetails(
+        thumbUrl = thumbUrl,
+        detailsUrl = detailUrl
+    )
+
+    private fun Result<List<Image>>.asImageResultsIntent(): ImageResultsAction {
         return when (this) {
-            is Result.Success -> ImageResultsIntent.ShowImages(data)
-            is Result.Fail -> ImageResultsIntent.ShowError
+            is Result.Success -> ImageResultsAction.ShowImages(data)
+            is Result.Fail -> ImageResultsAction.ShowError
         }
     }
 }

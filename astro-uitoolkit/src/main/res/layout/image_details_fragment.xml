@@ -3,14 +3,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <com.goofy.goober.androidview.view.ImageDetailsView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:state="@{viewState}" />
+
     <data>
+
         <variable
             name="viewState"
             type="com.goofy.goober.model.DetailsState" />
     </data>
-    <com.goofy.goober.androidview.view.ImageDetailsView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:state="@{viewState}"
-        />
 </layout>

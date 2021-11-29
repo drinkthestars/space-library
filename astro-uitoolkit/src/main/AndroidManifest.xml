@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.goofy.goober">
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".androidview.AstroApplication"
@@ -11,10 +10,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="Space Library"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
         android:screenOrientation="fullUser"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
         <activity android:name="com.goofy.goober.androidview.activity.AstroActivity">
@@ -25,5 +24,7 @@
             </intent-filter>
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

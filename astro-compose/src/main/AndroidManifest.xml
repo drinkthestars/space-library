@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.goofy.goober">
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".compose.AstroApplication"
@@ -23,5 +22,7 @@
             </intent-filter>
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

@@ -10,23 +10,27 @@ data class DetailsState(
     val isLoading: Boolean = false,
     val imageDetails: ImageDetails? = null
 ) {
-    fun reduce(intent: DetailsIntent): DetailsState {
-       return when(intent) {
-           is DetailsIntent.DisplayContent -> {
-               if (isLoading) this.copy(isLoading = false, hasError = false, imageDetails = intent.imageDetails) else this
-           }
-           DetailsIntent.ShowError -> {
-               this.copy(isLoading = false, hasError = true)
-           }
-           is DetailsIntent.LoadContent -> {
-               DetailsState(isLoading = true)
-           }
-       }
+    fun reduce(action: DetailsAction): DetailsState {
+        return when (action) {
+            is DetailsAction.DisplayContent -> {
+                if (isLoading) this.copy(
+                    isLoading = false,
+                    hasError = false,
+                    imageDetails = action.imageDetails
+                ) else this
+            }
+            DetailsAction.ShowError -> {
+                this.copy(isLoading = false, hasError = true)
+            }
+            is DetailsAction.LoadContent -> {
+                DetailsState(isLoading = true)
+            }
+        }
     }
 }
 
-sealed class DetailsIntent {
-    data class LoadContent(val image: Image): DetailsIntent()
-    data class DisplayContent(val imageDetails:ImageDetails?): DetailsIntent()
-    object ShowError: DetailsIntent()
+sealed class DetailsAction {
+    data class LoadContent(val image: Image) : DetailsAction()
+    data class DisplayContent(val imageDetails: ImageDetails?) : DetailsAction()
+    object ShowError : DetailsAction()
 }

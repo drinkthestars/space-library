@@ -13,7 +13,7 @@ import com.goofy.goober.databinding.ImageResultsViewBinding
 import com.goofy.goober.model.ImageResultsState
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 
 class ImageResultsView(
     context: Context,
@@ -57,7 +57,7 @@ class ImageResultsView(
     }
 
     data class Props(
-        val searchQuery: StateFlow<String>,
+        val searchQuery: Flow<String>,
         val lifecycleOwner: LifecycleOwner,
         val onQueryClear: () -> Unit,
         val onSearch: (String) -> Unit,

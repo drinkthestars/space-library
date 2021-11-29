@@ -5,5 +5,5 @@ import com.goofy.goober.api.ApiClient
 class ImageSearchResults(
     private val apiClient: ApiClient
 ) {
-    operator fun invoke() = apiClient.queuedSearchResults()
+    operator fun invoke() = apiClient.searchResults()
 }

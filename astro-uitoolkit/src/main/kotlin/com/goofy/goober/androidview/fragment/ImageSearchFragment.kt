@@ -5,16 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.snapshots.Snapshot
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import com.goofy.goober.R
-import com.goofy.goober.api.model.Image
-import com.goofy.goober.databinding.ImageResultsFragmentBinding
-import com.goofy.goober.model.ImageResultsIntent
 import com.goofy.goober.androidview.util.activityArgs
 import com.goofy.goober.androidview.util.backStackEntryViewModel
 import com.goofy.goober.androidview.view.ImageResultsView
-import com.goofy.goober.androidview.viewmodel.ImageSearchViewModel
+import com.goofy.goober.api.model.Image
+import com.goofy.goober.databinding.ImageResultsFragmentBinding
+import com.goofy.goober.model.ImageResultsAction
+import com.goofy.goober.viewmodel.ImageSearchViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class ImageSearchFragment : Fragment() {
 
@@ -23,13 +28,14 @@ class ImageSearchFragment : Fragment() {
     }
 
     private val viewModel by backStackEntryViewModel<ImageSearchViewModel>(R.id.imageSearchFragment)
-
     private val args by activityArgs<FragmentArgs>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() { args.imageSearchProps.onBack() }
+            override fun handleOnBackPressed() {
+                args.imageSearchProps.onBack()
+            }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
@@ -42,22 +48,46 @@ class ImageSearchFragment : Fragment() {
         return ImageResultsFragmentBinding
             .inflate(LayoutInflater.from(context), container, false)
             .apply {
+                val query = snapshotFlow { viewModel.state.query }
+                val imageResultsState = snapshotFlow { viewModel.state.imageResultsState }
+                println("WARP, query = $query")
+                println("WARP,   imageResultsState = $imageResultsState")
                 viewProps = with(viewModel) {
                     ImageResultsView.Props(
-                        searchQuery = state.query,
-                        onQueryClear = { state.query.value = "" },
+                        searchQuery = query,
+                        onQueryClear = {
+                            Snapshot.withMutableSnapshot {
+                                viewModel.state.query = ""
+                            }
+                        },
                         onSearch = {
-                            state.query.value = it
-                            consumeIntent(ImageResultsIntent.Search(it))
+                            Snapshot.withMutableSnapshot {
+                                viewModel.state.query = it
+                            }
+                            dispatch(ImageResultsAction.Search(it))
                         },
                         onImageClick = args.imageSearchProps.onImageClick,
                         lifecycleOwner = viewLifecycleOwner
                     )
                 }
-                viewState = viewModel.state.imageResultsState.asLiveData()
+                query.collectWhenStarted {
+                    println("WARP, query collect = $it")
+                }
+                imageResultsState.collectWhenStarted {
+                    println("WARP, imageResultsState collect = $it")
+                    viewState = it
+                }
                 lifecycleOwner = viewLifecycleOwner
             }
             .root
+    }
+
+    private inline fun <T> Flow<T>.collectWhenStarted(
+        crossinline action: suspend (value: T) -> Unit
+    ) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            collect(action)
+        }
     }
 
     data class Props(
