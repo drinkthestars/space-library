@@ -5,7 +5,7 @@ import com.goofy.goober.api.usecase.EnqueueImageSearch
 import com.goofy.goober.api.usecase.GetImageDetails
 import com.goofy.goober.api.usecase.ImageSearchResults
 import com.goofy.goober.interactor.AstroInteractor
-import com.goofy.goober.viewmodel.AstroViewModel
+import com.goofy.goober.viewmodel.AstroNavViewModel
 import com.goofy.goober.viewmodel.DetailsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -28,7 +28,7 @@ val common = module {
         )
     }
 
-    viewModel { AstroViewModel() }
+    viewModel { AstroNavViewModel() }
 
     viewModel { DetailsViewModel(astroInteractor = get()) }
 

@@ -14,13 +14,13 @@ import com.goofy.goober.compose.components.ImageDetails
 import com.goofy.goober.compose.components.ImageSearch
 import com.goofy.goober.compose.components.Splash
 import com.goofy.goober.compose.theme.AstroAppTheme
-import com.goofy.goober.model.AstroAction
-import com.goofy.goober.model.AstroState
+import com.goofy.goober.model.AstroNavAction
+import com.goofy.goober.model.AstroNavState
 import com.goofy.goober.model.ImageDetail
 import com.goofy.goober.model.ImageResultsAction
 import com.goofy.goober.model.ImageSearch
 import com.goofy.goober.model.Splash
-import com.goofy.goober.viewmodel.AstroViewModel
+import com.goofy.goober.viewmodel.AstroNavViewModel
 import com.goofy.goober.viewmodel.DetailsViewModel
 import com.goofy.goober.viewmodel.ImageSearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel as koinViewModel
@@ -35,11 +35,11 @@ internal class AstroComposeActivity : ComponentActivity() {
         fullscreen()
         setContent {
             AstroAppTheme {
-                val viewModel = viewModel<AstroViewModel>()
+                val viewModel = viewModel<AstroNavViewModel>()
                 AstroApp(
                     imageSearchViewModel = imageSearchViewModel,
                     detailsViewModel = detailsViewModel,
-                    state = viewModel.state,
+                    navState = viewModel.state,
                     onNavigate = { viewModel.dispatch(it) }
                 )
             }
@@ -55,18 +55,18 @@ internal class AstroComposeActivity : ComponentActivity() {
     internal fun AstroApp(
         imageSearchViewModel: ImageSearchViewModel,
         detailsViewModel: DetailsViewModel,
-        state: AstroState,
-        onNavigate: (AstroAction) -> Unit
+        navState: AstroNavState,
+        onNavigate: (AstroNavAction) -> Unit
     ) {
         Surface(color = MaterialTheme.colors.background, modifier = Modifier.fillMaxSize()) {
-            when (state) {
+            when (navState) {
                 is Splash -> Splash(onNavigate)
                 is ImageSearch -> ImageSearch(imageSearchViewModel.state, onNavigate) {
                     imageSearchViewModel.dispatch(ImageResultsAction.Search(it))
                 }
                 is ImageDetail -> ImageDetails(
                     state = detailsViewModel.state,
-                    image = state.image,
+                    image = navState.image,
                     onNavigate = onNavigate,
                     onAction = { detailsViewModel.dispatch(it) }
                 )

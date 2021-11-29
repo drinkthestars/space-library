@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.goofy.goober.api.model.Image
-import com.goofy.goober.model.AstroAction
+import com.goofy.goober.model.AstroNavAction
 import com.goofy.goober.model.DetailsAction
 import com.goofy.goober.model.DetailsState
 
@@ -24,12 +24,12 @@ import com.goofy.goober.model.DetailsState
 internal fun ImageDetails(
     state: DetailsState,
     image: Image,
-    onNavigate: (AstroAction) -> Unit,
+    onNavigate: (AstroNavAction) -> Unit,
     onAction: (DetailsAction) -> Unit
 ) {
     val backHandlingEnabled by remember { mutableStateOf(true) }
     BackHandler(backHandlingEnabled) {
-        onNavigate(AstroAction.Back)
+        onNavigate(AstroNavAction.Back)
     }
 
     LaunchedEffect(1) { onAction(DetailsAction.LoadContent(image)) }

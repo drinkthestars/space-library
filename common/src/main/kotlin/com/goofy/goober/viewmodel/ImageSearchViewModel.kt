@@ -28,7 +28,7 @@ class ImageSearchViewModel(
 
     init {
         astroInteractor
-            .produceImageSearchResultIntents()
+            .produceImageSearchResult()
             .onEach { dispatch(it) }
             .launchIn(viewModelScope)
             .also { dispatch(ImageResultsAction.Search(InitialQuery)) }
@@ -39,9 +39,9 @@ class ImageSearchViewModel(
         middleware(action)
     }
 
-    private fun middleware(intent: ImageResultsAction) {
-        when (intent) {
-            is ImageResultsAction.Search -> astroInteractor.enqueueImageSearch(intent.query)
+    private fun middleware(action: ImageResultsAction) {
+        when (action) {
+            is ImageResultsAction.Search -> astroInteractor.enqueueImageSearch(action.query)
             ImageResultsAction.ShowError,
             is ImageResultsAction.ShowImages -> Unit
         }

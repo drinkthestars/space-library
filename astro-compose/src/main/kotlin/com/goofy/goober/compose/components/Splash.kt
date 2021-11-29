@@ -19,10 +19,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.goofy.goober.common.R
 import com.goofy.goober.compose.theme.SplashBg
-import com.goofy.goober.model.AstroAction
+import com.goofy.goober.model.AstroNavAction
 
 @Composable
-internal fun Splash(onNavigate: (AstroAction) -> Unit) {
+internal fun Splash(onNavigate: (AstroNavAction) -> Unit) {
     Surface(color = SplashBg, modifier = Modifier.fillMaxSize()) {
         SplashContent(onNavigate)
     }
@@ -30,10 +30,10 @@ internal fun Splash(onNavigate: (AstroAction) -> Unit) {
 
 @Composable
 internal fun SplashContent(
-    onAction: (AstroAction) -> Unit
+    onAction: (AstroNavAction) -> Unit
 ) {
     val alpha = fadeOutAfter(duration = 1_700) {
-        onAction(AstroAction.ImageSearchResults)
+        onAction(AstroNavAction.ToImageSearchResults)
     }
     Box(
         contentAlignment = Alignment.Center,

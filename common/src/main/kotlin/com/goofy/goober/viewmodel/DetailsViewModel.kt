@@ -20,7 +20,7 @@ class DetailsViewModel(private val astroInteractor: AstroInteractor) : ViewModel
         when (action) {
             is DetailsAction.LoadContent -> {
                 viewModelScope.launch {
-                    reduce(astroInteractor.produceDisplayDetailsIntent(action.image))
+                    reduce(astroInteractor.produceDisplayDetails(action.image))
                 }
             }
             is DetailsAction.DisplayContent,

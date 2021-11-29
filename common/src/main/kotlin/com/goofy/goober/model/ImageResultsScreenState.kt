@@ -4,7 +4,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.Snapshot
+import androidx.compose.runtime.snapshots.Snapshot.Companion.withMutableSnapshot
 
 @Stable
 class ImageResultsScreenState(
@@ -18,13 +18,13 @@ class ImageResultsScreenState(
         private set
 
     fun update(action: ImageResultsAction) {
-        Snapshot.withMutableSnapshot {
+        withMutableSnapshot {
             imageResultsState = imageResultsState.reduce(action)
         }
     }
 
     fun update(query: String) {
-        Snapshot.withMutableSnapshot {
+        withMutableSnapshot {
             this.query = query
         }
     }

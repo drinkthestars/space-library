@@ -42,6 +42,7 @@ captures/
 .idea/modules.xml
 .idea/misc.xml
 .idea/navEditor.xml
+.idea/deploymentTargetDropDown.xml
 
 # Version control
 vcs.xml

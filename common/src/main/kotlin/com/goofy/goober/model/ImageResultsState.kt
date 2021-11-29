@@ -12,11 +12,11 @@ data class ImageResultsState(
     val images: List<Image> = emptyList()
 )
 
-fun ImageResultsState.reduce(intent: ImageResultsAction): ImageResultsState {
-    return when (intent) {
-        is ShowImages -> if (this.isLoading) imageResultsState(intent) else this
+fun ImageResultsState.reduce(action: ImageResultsAction): ImageResultsState {
+    return when (action) {
+        is ShowImages -> if (this.isLoading) imageResultsState(action) else this
         is ShowError -> this.copy(isLoading = false, hasError = true, noResults = false)
-        is Search -> if (intent.query.isNotBlank()) {
+        is Search -> if (action.query.isNotBlank()) {
             this.copy(isLoading = true, hasError = false, noResults = false)
         } else {
             this
@@ -24,8 +24,8 @@ fun ImageResultsState.reduce(intent: ImageResultsAction): ImageResultsState {
     }
 }
 
-private fun imageResultsState(intent: ShowImages): ImageResultsState {
-    val images = intent.images
+private fun imageResultsState(action: ShowImages): ImageResultsState {
+    val images = action.images
     return if (images.isNotEmpty()) {
         ImageResultsState(images = images)
     } else {

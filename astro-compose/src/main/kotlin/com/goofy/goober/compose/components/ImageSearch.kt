@@ -39,14 +39,14 @@ import coil.compose.rememberImagePainter
 import com.goofy.goober.api.model.Image
 import com.goofy.goober.common.R
 import com.goofy.goober.compose.theme.ErrorBg
-import com.goofy.goober.model.AstroAction
+import com.goofy.goober.model.AstroNavAction
 import com.goofy.goober.model.ImageResultsScreenState
 import com.goofy.goober.model.ImageResultsState
 
 @Composable
 internal fun ImageSearch(
     state: ImageResultsScreenState,
-    onNavigate: (AstroAction) -> Unit,
+    onNavigate: (AstroNavAction) -> Unit,
     onSearch: (String) -> Unit
 ) {
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
@@ -68,7 +68,7 @@ internal fun ImageSearch(
                     itemsIndexed(
                         items = state.imageResultsState.images,
                         itemContent = { _, item ->
-                            ImageResultItem(item) { onNavigate(AstroAction.OpenDetails(it)) }
+                            ImageResultItem(item) { onNavigate(AstroNavAction.ToImageDetails(it)) }
                         }
                     )
                 }

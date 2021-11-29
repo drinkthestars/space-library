@@ -18,9 +18,9 @@ class AstroInteractor(
 
     fun enqueueImageSearch(query: String) = enqueueImageSearch.invoke(query)
 
-    fun produceImageSearchResultIntents() = imageSearchResults().map { it.asImageResultsIntent() }
+    fun produceImageSearchResult() = imageSearchResults().map { it.asImageResultsAction() }
 
-    suspend fun produceDisplayDetailsIntent(image: Image): DetailsAction {
+    suspend fun produceDisplayDetails(image: Image): DetailsAction {
         return when (val result = image.getDetails()) {
             is Result.Success -> DetailsAction.DisplayContent(
                 ImageDetails(
@@ -39,7 +39,7 @@ class AstroInteractor(
         detailsUrl = detailUrl
     )
 
-    private fun Result<List<Image>>.asImageResultsIntent(): ImageResultsAction {
+    private fun Result<List<Image>>.asImageResultsAction(): ImageResultsAction {
         return when (this) {
             is Result.Success -> ImageResultsAction.ShowImages(data)
             is Result.Fail -> ImageResultsAction.ShowError

@@ -10,13 +10,13 @@ import com.goofy.goober.R
 import com.goofy.goober.androidview.navigation.AstroAppRouter
 import com.goofy.goober.androidview.navigation.AstroNavArgsViewModel
 import com.goofy.goober.androidview.navigation.AstroNavController
-import com.goofy.goober.viewmodel.AstroViewModel
+import com.goofy.goober.viewmodel.AstroNavViewModel
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 internal class AstroActivity : AppCompatActivity() {
 
-    private val viewModel: AstroViewModel by viewModel()
+    private val navViewModel: AstroNavViewModel by viewModel()
     private val navArgsViewModel: AstroNavArgsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,8 +30,8 @@ internal class AstroActivity : AppCompatActivity() {
         )
 
         lifecycleScope.launchWhenStarted {
-            snapshotFlow { viewModel.state }.collect { state ->
-                router.route(state) { viewModel.dispatch(it) }
+            snapshotFlow { navViewModel.state }.collect { state ->
+                router.route(state) { navViewModel.dispatch(it) }
             }
         }
     }

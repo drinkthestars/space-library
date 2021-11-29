@@ -5,20 +5,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.Snapshot.Companion.withMutableSnapshot
 import androidx.lifecycle.ViewModel
-import com.goofy.goober.model.AstroAction
-import com.goofy.goober.model.AstroState
+import com.goofy.goober.model.AstroNavAction
+import com.goofy.goober.model.AstroNavState
 import com.goofy.goober.model.Splash
 
-class AstroViewModel(
-    initState: AstroState = Splash
+class AstroNavViewModel(
+    initNavState: AstroNavState = Splash
 ) : ViewModel() {
 
-    var state by mutableStateOf<AstroState>(initState)
+    var state by mutableStateOf<AstroNavState>(initNavState)
         private set
 
-    fun dispatch(action: AstroAction) {
+    fun dispatch(navAction: AstroNavAction) {
         withMutableSnapshot {
-            state = state.reduce(action)
+            state = state.reduce(navAction)
         }
     }
 }
