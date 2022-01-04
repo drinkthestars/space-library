@@ -24,6 +24,13 @@ logic:
 2. `astro-compose`
     - Using [Jetpack Compose](https://developer.android.com/jetpack/compose/setup) for rendering
 
+
+`astro-androidview` | `astro-compose`
+-- | --
+<img src="screenshots/astro-androidview.png" width=140/> | <img src="screenshots/astro-compose.png" width=140/>
+
+
+
 #### References
 
 - Another [similar project](https://github.com/drinkthestars/virtual-date-planner)
