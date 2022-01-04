@@ -1,4 +1,4 @@
-package com.goofy.goober.common.viewmodel
+package com.goofy.goober.common.snapshot
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

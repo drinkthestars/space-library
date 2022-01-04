@@ -16,9 +16,9 @@ import com.goofy.goober.common.model.ImageDetail
 import com.goofy.goober.common.model.ImageResultsAction
 import com.goofy.goober.common.model.ImageSearch
 import com.goofy.goober.common.model.Splash
+import com.goofy.goober.common.snapshot.AstroNavViewModel
 import com.goofy.goober.common.snapshot.DetailsViewModel
-import com.goofy.goober.common.viewmodel.AstroNavViewModel
-import com.goofy.goober.common.viewmodel.ImageSearchViewModel
+import com.goofy.goober.common.snapshot.ImageSearchViewModel
 import com.goofy.goober.compose.components.ImageDetails
 import com.goofy.goober.compose.components.ImageSearch
 import com.goofy.goober.compose.components.Splash
