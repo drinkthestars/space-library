@@ -1,13 +1,13 @@
-package com.goofy.goober.interactor
+package com.goofy.goober.common.interactor
 
 import com.goofy.goober.api.model.Image
 import com.goofy.goober.api.usecase.EnqueueImageSearch
 import com.goofy.goober.api.usecase.GetImageDetails
 import com.goofy.goober.api.usecase.ImageSearchResults
 import com.goofy.goober.api.util.Result
-import com.goofy.goober.model.DetailsAction
-import com.goofy.goober.model.ImageDetails
-import com.goofy.goober.model.ImageResultsAction
+import com.goofy.goober.common.model.DetailsAction
+import com.goofy.goober.common.model.ImageDetails
+import com.goofy.goober.common.model.ImageResultsAction
 import kotlinx.coroutines.flow.map
 
 class AstroInteractor(

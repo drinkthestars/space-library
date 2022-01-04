@@ -9,8 +9,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.goofy.goober.api.model.Image
+import com.goofy.goober.common.model.ImageResultsState
 import com.goofy.goober.databinding.ImageResultsViewBinding
-import com.goofy.goober.model.ImageResultsState
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.Flow

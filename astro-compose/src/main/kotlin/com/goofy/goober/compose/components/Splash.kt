@@ -18,8 +18,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.goofy.goober.common.R
+import com.goofy.goober.common.model.AstroNavAction
 import com.goofy.goober.compose.theme.SplashBg
-import com.goofy.goober.model.AstroNavAction
 
 @Composable
 internal fun Splash(onNavigate: (AstroNavAction) -> Unit) {

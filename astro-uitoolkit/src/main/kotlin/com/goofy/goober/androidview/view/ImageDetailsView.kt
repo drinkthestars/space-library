@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import coil.load
+import com.goofy.goober.common.model.DetailsState
 import com.goofy.goober.databinding.ImageDetailsViewBinding
-import com.goofy.goober.model.DetailsState
 
 internal class ImageDetailsView(
     context: Context,

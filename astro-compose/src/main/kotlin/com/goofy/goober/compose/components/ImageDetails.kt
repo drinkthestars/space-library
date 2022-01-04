@@ -16,9 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.goofy.goober.api.model.Image
-import com.goofy.goober.model.AstroNavAction
-import com.goofy.goober.model.DetailsAction
-import com.goofy.goober.model.DetailsState
+import com.goofy.goober.common.model.AstroNavAction
+import com.goofy.goober.common.model.DetailsAction
+import com.goofy.goober.common.model.DetailsState
 
 @Composable
 internal fun ImageDetails(

@@ -2,24 +2,25 @@
 
 buildscript {
     ext.koin_version = '3.1.4'
-    ext.kotlin_version = '1.5.31'
+    ext.kotlin_version = '1.6.0'
     ext.coil_version = '1.4.0'
-    ext.compose_version = '1.1.0-beta03'
-    ext.compose_uicore_version = '1.1.0-beta03'
-    ext.compose_nav_version = "2.4.0-beta02"
-    ext.coroutines_version = "1.5.2"
+    ext.compose_version = '1.1.0-rc01'
+    ext.compose_uicore_version = '1.1.0-rc01'
+    ext.compose_nav_version = "2.4.0-rc01"
+    ext.coroutines_version = "1.6.0"
     ext.coil_version = "1.4.0"
-    ext.agp_version = "7.0.3"
+    ext.agp_version = '7.0.4'
     ext.androidx_core = "1.7.0"
     ext.androidx_lifecycle = "2.4.0"
-    ext.androidx_nav = "2.4.0-beta01"
+    ext.androidx_nav = "2.4.0-rc01"
     ext.androidx_fragment = "1.4.0"
     ext.androidx_activity = "1.4.0"
     ext.androidx_appcompat = "1.4.0"
-    ext.moshi_version = "1.12.0"
+    ext.moshi_version = "1.13.0"
 
     repositories {
         google()
+        mavenCentral()
         jcenter()
     }
     dependencies {
@@ -34,6 +35,7 @@ buildscript {
 allprojects {
     repositories {
         google()
+        mavenCentral()
         jcenter()
     }
 }

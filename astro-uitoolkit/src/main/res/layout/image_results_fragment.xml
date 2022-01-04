@@ -13,7 +13,7 @@
 
         <import type="com.goofy.goober.androidview.view.ImageResultsView.Props" />
 
-        <import type="com.goofy.goober.model.ImageResultsState" />
+        <import type="com.goofy.goober.common.model.ImageResultsState" />
 
         <import type="androidx.lifecycle.LiveData" />
 

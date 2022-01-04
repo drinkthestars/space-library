@@ -5,17 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.compose.runtime.snapshotFlow
 import androidx.fragment.app.Fragment
 import com.goofy.goober.R
-import com.goofy.goober.androidview.navigation.activityArgs
-import com.goofy.goober.androidview.navigation.backStackEntryViewModel
-import com.goofy.goober.androidview.navigation.collectWhenStarted
 import com.goofy.goober.androidview.view.ImageResultsView
 import com.goofy.goober.api.model.Image
+import com.goofy.goober.common.flow.ImageSearchViewModel
+import com.goofy.goober.common.model.ImageResultsAction
 import com.goofy.goober.databinding.ImageResultsFragmentBinding
-import com.goofy.goober.model.ImageResultsAction
-import com.goofy.goober.viewmodel.ImageSearchViewModel
 import kotlinx.coroutines.flow.Flow
 
 internal class ImageSearchFragment : Fragment() {
@@ -45,10 +41,8 @@ internal class ImageSearchFragment : Fragment() {
         return ImageResultsFragmentBinding
             .inflate(LayoutInflater.from(context), container, false)
             .apply {
-                val query = snapshotFlow { viewModel.state.query }
-                val imageResultsState = snapshotFlow { viewModel.state.imageResultsState }
-                viewProps = viewProps(query)
-                collectWhenStarted(imageResultsState) { viewState = it }
+                viewProps = viewProps(viewModel.state.query)
+                collectWhenStarted(viewModel.state.imageResultsState) { viewState = it }
                 lifecycleOwner = viewLifecycleOwner
             }
             .root

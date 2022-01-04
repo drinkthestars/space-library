@@ -1,13 +1,10 @@
-package com.goofy.goober
+package com.goofy.goober.common
 
 import com.goofy.goober.api.ApiClient
 import com.goofy.goober.api.usecase.EnqueueImageSearch
 import com.goofy.goober.api.usecase.GetImageDetails
 import com.goofy.goober.api.usecase.ImageSearchResults
-import com.goofy.goober.interactor.AstroInteractor
-import com.goofy.goober.viewmodel.AstroNavViewModel
-import com.goofy.goober.viewmodel.DetailsViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
+import com.goofy.goober.common.interactor.AstroInteractor
 import org.koin.dsl.module
 
 val common = module {
@@ -27,10 +24,6 @@ val common = module {
             imageSearchResults = get()
         )
     }
-
-    viewModel { AstroNavViewModel() }
-
-    viewModel { DetailsViewModel(astroInteractor = get()) }
 
     /**
      * Can't use until Kotlin 1.4.20 + Compose support

@@ -38,10 +38,10 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.goofy.goober.api.model.Image
 import com.goofy.goober.common.R
+import com.goofy.goober.common.model.AstroNavAction
+import com.goofy.goober.common.model.ImageResultsState
+import com.goofy.goober.common.snapshot.model.ImageResultsScreenState
 import com.goofy.goober.compose.theme.ErrorBg
-import com.goofy.goober.model.AstroNavAction
-import com.goofy.goober.model.ImageResultsScreenState
-import com.goofy.goober.model.ImageResultsState
 
 @Composable
 internal fun ImageSearch(

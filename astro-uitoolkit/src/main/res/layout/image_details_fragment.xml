@@ -12,6 +12,6 @@
 
         <variable
             name="viewState"
-            type="com.goofy.goober.model.DetailsState" />
+            type="com.goofy.goober.common.model.DetailsState" />
     </data>
 </layout>

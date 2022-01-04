@@ -1,12 +1,12 @@
-package com.goofy.goober.viewmodel
+package com.goofy.goober.common.snapshot
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.goofy.goober.interactor.AstroInteractor
-import com.goofy.goober.model.ImageResultsAction
-import com.goofy.goober.model.ImageResultsScreenState
-import com.goofy.goober.model.ImageResultsState
+import com.goofy.goober.common.interactor.AstroInteractor
+import com.goofy.goober.common.model.ImageResultsAction
+import com.goofy.goober.common.model.ImageResultsState
+import com.goofy.goober.common.snapshot.model.ImageResultsScreenState
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 

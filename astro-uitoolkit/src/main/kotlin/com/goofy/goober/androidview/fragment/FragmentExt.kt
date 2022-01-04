@@ -1,4 +1,4 @@
-package com.goofy.goober.androidview.navigation
+package com.goofy.goober.androidview.fragment
 
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
@@ -6,8 +6,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.goofy.goober.androidview.navigation.AstroNavArgsViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.getKoin
 import org.koin.androidx.viewmodel.ViewModelOwner
@@ -45,6 +45,6 @@ internal inline fun <T> Fragment.collectWhenStarted(
     crossinline action: suspend (value: T) -> Unit
 ) {
     viewLifecycleOwner.lifecycleScope.launch {
-        flow.collect(action)
+        flow.collect { action(it) }
     }
 }

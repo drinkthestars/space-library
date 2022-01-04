@@ -1,9 +1,9 @@
-package com.goofy.goober.model
+package com.goofy.goober.common.model
 
 import com.goofy.goober.api.model.Image
-import com.goofy.goober.model.ImageResultsAction.Search
-import com.goofy.goober.model.ImageResultsAction.ShowError
-import com.goofy.goober.model.ImageResultsAction.ShowImages
+import com.goofy.goober.common.model.ImageResultsAction.Search
+import com.goofy.goober.common.model.ImageResultsAction.ShowError
+import com.goofy.goober.common.model.ImageResultsAction.ShowImages
 
 data class ImageResultsState(
     val isLoading: Boolean = false,

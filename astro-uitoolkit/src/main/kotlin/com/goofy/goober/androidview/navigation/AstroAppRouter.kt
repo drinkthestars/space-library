@@ -4,14 +4,14 @@ import com.goofy.goober.R
 import com.goofy.goober.androidview.fragment.DetailsFragment
 import com.goofy.goober.androidview.fragment.ImageSearchFragment
 import com.goofy.goober.androidview.fragment.SplashFragment
-import com.goofy.goober.model.AstroNavAction
-import com.goofy.goober.model.AstroNavAction.Back
-import com.goofy.goober.model.AstroNavAction.ToImageSearchResults
-import com.goofy.goober.model.AstroNavAction.ToImageDetails
-import com.goofy.goober.model.AstroNavState
-import com.goofy.goober.model.ImageDetail
-import com.goofy.goober.model.ImageSearch
-import com.goofy.goober.model.Splash
+import com.goofy.goober.common.model.AstroNavAction
+import com.goofy.goober.common.model.AstroNavAction.Back
+import com.goofy.goober.common.model.AstroNavAction.ToImageDetails
+import com.goofy.goober.common.model.AstroNavAction.ToImageSearchResults
+import com.goofy.goober.common.model.AstroNavState
+import com.goofy.goober.common.model.ImageDetail
+import com.goofy.goober.common.model.ImageSearch
+import com.goofy.goober.common.model.Splash
 
 internal class AstroAppRouter(
     private val astroNavController: AstroNavController,

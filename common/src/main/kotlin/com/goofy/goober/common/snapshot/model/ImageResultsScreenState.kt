@@ -1,10 +1,12 @@
-package com.goofy.goober.model
+package com.goofy.goober.common.snapshot.model
 
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.Snapshot.Companion.withMutableSnapshot
+import com.goofy.goober.common.model.ImageResultsAction
+import com.goofy.goober.common.model.ImageResultsState
+import com.goofy.goober.common.model.reduce
 
 @Stable
 class ImageResultsScreenState(
@@ -18,14 +20,10 @@ class ImageResultsScreenState(
         private set
 
     fun update(action: ImageResultsAction) {
-        withMutableSnapshot {
-            imageResultsState = imageResultsState.reduce(action)
-        }
+        imageResultsState = imageResultsState.reduce(action)
     }
 
     fun update(query: String) {
-        withMutableSnapshot {
-            this.query = query
-        }
+        this.query = query
     }
 }

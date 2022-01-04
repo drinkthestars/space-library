@@ -10,19 +10,19 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.goofy.goober.common.model.AstroNavAction
+import com.goofy.goober.common.model.AstroNavState
+import com.goofy.goober.common.model.ImageDetail
+import com.goofy.goober.common.model.ImageResultsAction
+import com.goofy.goober.common.model.ImageSearch
+import com.goofy.goober.common.model.Splash
+import com.goofy.goober.common.snapshot.DetailsViewModel
+import com.goofy.goober.common.viewmodel.AstroNavViewModel
+import com.goofy.goober.common.viewmodel.ImageSearchViewModel
 import com.goofy.goober.compose.components.ImageDetails
 import com.goofy.goober.compose.components.ImageSearch
 import com.goofy.goober.compose.components.Splash
 import com.goofy.goober.compose.theme.AstroAppTheme
-import com.goofy.goober.model.AstroNavAction
-import com.goofy.goober.model.AstroNavState
-import com.goofy.goober.model.ImageDetail
-import com.goofy.goober.model.ImageResultsAction
-import com.goofy.goober.model.ImageSearch
-import com.goofy.goober.model.Splash
-import com.goofy.goober.viewmodel.AstroNavViewModel
-import com.goofy.goober.viewmodel.DetailsViewModel
-import com.goofy.goober.viewmodel.ImageSearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel as koinViewModel
 
 internal class AstroComposeActivity : ComponentActivity() {

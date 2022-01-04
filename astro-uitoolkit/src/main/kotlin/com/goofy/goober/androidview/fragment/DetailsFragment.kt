@@ -5,14 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.compose.runtime.snapshotFlow
 import androidx.fragment.app.Fragment
-import com.goofy.goober.androidview.navigation.activityArgs
-import com.goofy.goober.androidview.navigation.collectWhenStarted
 import com.goofy.goober.api.model.Image
+import com.goofy.goober.common.flow.DetailsViewModel
+import com.goofy.goober.common.model.DetailsAction
 import com.goofy.goober.databinding.ImageDetailsFragmentBinding
-import com.goofy.goober.model.DetailsAction
-import com.goofy.goober.viewmodel.DetailsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 internal class DetailsFragment : Fragment() {
@@ -42,7 +39,7 @@ internal class DetailsFragment : Fragment() {
         return ImageDetailsFragmentBinding
             .inflate(LayoutInflater.from(context), container, false)
             .apply {
-                collectWhenStarted(snapshotFlow { viewModel.state }) { viewState = it }
+                collectWhenStarted(viewModel.state) { viewState = it }
                 viewModel.dispatch(DetailsAction.LoadContent(args.detailsProps.image))
             }
             .root

@@ -10,7 +10,6 @@ import android.view.ViewPropertyAnimator
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import com.goofy.goober.androidview.navigation.activityArgs
 import com.goofy.goober.databinding.SplashFragmentBinding
 
 internal class SplashFragment : Fragment() {

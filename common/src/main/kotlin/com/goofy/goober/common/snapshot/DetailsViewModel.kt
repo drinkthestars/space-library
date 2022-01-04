@@ -1,14 +1,13 @@
-package com.goofy.goober.viewmodel
+package com.goofy.goober.common.snapshot
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.Snapshot.Companion.withMutableSnapshot
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.goofy.goober.interactor.AstroInteractor
-import com.goofy.goober.model.DetailsAction
-import com.goofy.goober.model.DetailsState
+import com.goofy.goober.common.interactor.AstroInteractor
+import com.goofy.goober.common.model.DetailsAction
+import com.goofy.goober.common.model.DetailsState
 import kotlinx.coroutines.launch
 
 class DetailsViewModel(private val astroInteractor: AstroInteractor) : ViewModel() {
@@ -29,8 +28,6 @@ class DetailsViewModel(private val astroInteractor: AstroInteractor) : ViewModel
     }
 
     private fun reduce(action: DetailsAction) {
-        withMutableSnapshot {
-            state = state.reduce(action)
-        }
+        state = state.reduce(action)
     }
 }

@@ -1,4 +1,4 @@
-package com.goofy.goober.model
+package com.goofy.goober.common.model
 
 import com.goofy.goober.api.model.Image
 import com.goofy.goober.api.model.ImageSizes
