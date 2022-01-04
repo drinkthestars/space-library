@@ -1,5 +1,5 @@
 include ':common'
-include ':astro-uitoolkit'
+include ':astro-androidview'
 include ':astro-compose'
 include ':api'
 rootProject.name = "space-library"

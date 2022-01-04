@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 /**
- * This is logically the same as [ImageSearchViewModel] in the astro-uitoolkit package.
+ * This is logically the same as [ImageSearchViewModel] in the flow package.
  * The only difference is that this [ImageResultsScreenState]
  * uses Compose's [mutableStateOf]
  */

@@ -16,7 +16,7 @@ logic:
    Uses [SnapshotState](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/runtime/runtime/src/commonMain/kotlin/androidx/compose/runtime/SnapshotState.kt;l=17?q=SnapshotSt&sq=&ss=androidx%2Fplatform%2Fframeworks%2Fsupport:compose%2F)
    APIs
    from [androidx.compose.runtime](https://developer.android.com/reference/kotlin/androidx/compose/runtime/package-summary)
-3. `astro-uitoolkit`
+3. `astro-androidview`
     - Using `Fragment`s, Android UI Toolkit
       & [Data Binding](https://developer.android.com/topic/libraries/data-binding)
       , [Navigation component](https://developer.android.com/guide/navigation/navigation-getting-started)
